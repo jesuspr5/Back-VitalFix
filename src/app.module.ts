@@ -6,6 +6,7 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { RestaurantsModule } from './restaurants/restaurants.module';
+import { CommentsModule } from './comments/comments.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { RestaurantsModule } from './restaurants/restaurants.module';
     UsersModule,
     AuthModule,
     RestaurantsModule,
+    CommentsModule,
   ],
   controllers: [],
   providers: [],
