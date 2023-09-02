@@ -7,11 +7,16 @@ import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { RestaurantsModule } from './restaurants/restaurants.module';
 import { CommentsModule } from './comments/comments.module';
+import { ImagesModule } from './images/images.module';
+import { FirebaseModule } from './firebase/firebase.module';
+import { EnvCofiguration } from './config/env.config';
+import { GalleryModule } from './gallery/gallery.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+      load: [EnvCofiguration],
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
@@ -38,6 +43,9 @@ import { CommentsModule } from './comments/comments.module';
     AuthModule,
     RestaurantsModule,
     CommentsModule,
+    ImagesModule,
+    FirebaseModule,
+    GalleryModule,
   ],
   controllers: [],
   providers: [],
