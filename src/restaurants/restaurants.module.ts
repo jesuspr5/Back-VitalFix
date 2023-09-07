@@ -10,5 +10,6 @@ import { FirebaseService } from '../firebase/firebase.service';
   imports: [TypeOrmModule.forFeature([Restaurant, RestaurantImage])],
   controllers: [RestaurantsController],
   providers: [RestaurantsService, FirebaseService],
+  exports: [RestaurantsService],
 })
 export class RestaurantsModule {}
