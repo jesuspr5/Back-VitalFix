@@ -6,3 +6,7 @@ export interface FirebaseAuthConfig {
   messagingSenderId: string;
   appId: string;
 }
+
+export interface UrlUpload {
+  url: string;
+}

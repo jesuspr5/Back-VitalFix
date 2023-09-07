@@ -3,10 +3,12 @@ import { RestaurantsService } from './restaurants.service';
 import { RestaurantsController } from './restaurants.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Restaurant } from './entities/restaurant.entity';
+import { RestaurantImage } from './entities/restaurant-images.entity';
+import { FirebaseService } from '../firebase/firebase.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Restaurant])],
+  imports: [TypeOrmModule.forFeature([Restaurant, RestaurantImage])],
   controllers: [RestaurantsController],
-  providers: [RestaurantsService],
+  providers: [RestaurantsService, FirebaseService],
 })
 export class RestaurantsModule {}

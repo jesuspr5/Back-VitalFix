@@ -8,8 +8,8 @@ import { Role } from '../../common/enums/rol.enum';
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({ nullable: true })
   name: string;
@@ -28,4 +28,7 @@ export class User {
 
   @DeleteDateColumn()
   deletedAt: Date;
+
+  @Column({ nullable: true })
+  urlAvatar: string;
 }

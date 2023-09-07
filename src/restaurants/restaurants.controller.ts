@@ -11,13 +11,13 @@ import {
   MaxFileSizeValidator,
   FileTypeValidator,
   UseInterceptors,
+  UploadedFiles,
 } from '@nestjs/common';
 import { RestaurantsService } from './restaurants.service';
 import { CreateRestaurantDto } from './dto/create-restaurant.dto';
 import { UpdateRestaurantDto } from './dto/update-restaurant.dto';
 import { ApiTags } from '@nestjs/swagger';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { UploadGalleryDto } from '../gallery/dto/upload.galery.dto';
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 
 @ApiTags('Restaurants')
 @Controller('restaurants')
@@ -25,25 +25,21 @@ export class RestaurantsController {
   constructor(private readonly restaurantsService: RestaurantsService) {}
 
   @Post()
-  create(@Body() createRestaurantDto: CreateRestaurantDto) {
-    return this.restaurantsService.create(createRestaurantDto);
-  }
-
-  @Post('upload')
-  @UseInterceptors(FileInterceptor('file'))
-  uploadImage(
-    @UploadedFile(
+  @UseInterceptors(FilesInterceptor('images'))
+  create(
+    @UploadedFiles(
       new ParseFilePipe({
         validators: [
-          new MaxFileSizeValidator({ maxSize: 5242880 }),
           new FileTypeValidator({ fileType: /(jpg|jpeg|png)$/ }),
+          new MaxFileSizeValidator({ maxSize: 5242880 }),
         ],
+        fileIsRequired: false,
       }),
     )
-    file: Express.Multer.File,
-    @Body() uploadGalleryDto: UploadGalleryDto,
+    images: Array<Express.Multer.File>,
+    @Body() createRestaurantDto: CreateRestaurantDto,
   ) {
-    return this.restaurantsService.uploadImage(file, uploadGalleryDto);
+    return this.restaurantsService.create(createRestaurantDto, images);
   }
 
   @Get()
@@ -53,7 +49,7 @@ export class RestaurantsController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.restaurantsService.findOne(+id);
+    return this.restaurantsService.findOne(id);
   }
 
   @Patch(':id')
@@ -61,11 +57,11 @@ export class RestaurantsController {
     @Param('id') id: string,
     @Body() updateRestaurantDto: UpdateRestaurantDto,
   ) {
-    return this.restaurantsService.update(+id, updateRestaurantDto);
+    return this.restaurantsService.update(id, updateRestaurantDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.restaurantsService.remove(+id);
+    return this.restaurantsService.remove(id);
   }
 }

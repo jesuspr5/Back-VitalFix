@@ -30,4 +30,7 @@ export class CreateRestaurantDto {
   @IsString()
   @MinLength(1)
   geolocation: string;
+
+  @IsOptional()
+  images: string;
 }

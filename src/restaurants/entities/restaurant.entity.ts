@@ -1,10 +1,16 @@
-import { Gallery } from '../../gallery/entities/gallery.entity';
-import { Entity, Column, DeleteDateColumn, OneToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  DeleteDateColumn,
+  PrimaryGeneratedColumn,
+  OneToMany,
+} from 'typeorm';
+import { RestaurantImage } from './restaurant-images.entity';
 
 @Entity()
 export class Restaurant {
-  @Column({ primary: true, generated: true })
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   name: string;
@@ -24,9 +30,10 @@ export class Restaurant {
 
   @DeleteDateColumn()
   deletedAt: Date;
-
-  @OneToMany(() => Gallery, (gallery) => gallery.id, {
+  // images
+  @OneToMany(() => RestaurantImage, (image) => image.restaurant, {
+    cascade: true,
     eager: true,
   })
-  gallery: Gallery[];
+  images?: RestaurantImage[];
 }
