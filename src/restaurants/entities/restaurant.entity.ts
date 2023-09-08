@@ -7,6 +7,7 @@ import {
   UpdateDateColumn,
   CreateDateColumn,
   ManyToOne,
+  ManyToMany,
 } from 'typeorm';
 import { RestaurantImage } from './restaurant-images.entity';
 import { Comment } from '../../comments/entities/comment.entity';
@@ -66,4 +67,8 @@ export class Restaurant {
   // Relación uno a muchos con Rating
   @OneToMany(() => Rating, (rating) => rating.restaurant)
   ratings: Rating[];
+
+  // Relación muchos a muchos con User para los usuarios que han marcado el restaurante como favorito
+  @ManyToMany(() => User, (user) => user.favoriteRestaurants)
+  favoriteUsers: User[];
 }

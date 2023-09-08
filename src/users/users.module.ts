@@ -4,13 +4,19 @@ import { User } from './entities/user.entity';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 import { AuthModule } from '../auth/auth.module';
-import { FirebaseService } from '../firebase/firebase.service';
 import { RestaurantsModule } from '../restaurants/restaurants.module';
+import { FirebaseModule } from '../firebase/firebase.module';
+import { RestaurantsService } from '../restaurants/restaurants.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User]), forwardRef(() => AuthModule)],
+  imports: [
+    FirebaseModule,
+    forwardRef(() => RestaurantsModule),
+    TypeOrmModule.forFeature([User]),
+    forwardRef(() => AuthModule),
+  ],
   controllers: [UsersController],
-  providers: [UsersService, FirebaseService],
+  providers: [UsersService],
   exports: [UsersService],
 })
 export class UsersModule {}

@@ -3,6 +3,8 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinTable,
+  ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -61,4 +63,9 @@ export class User {
   // Relación uno a muchos con Rating
   @OneToMany(() => Rating, (rating) => rating.user)
   ratings: Rating[];
+
+  // Relación muchos a muchos con Restaurant para los restaurantes favoritos
+  @ManyToMany(() => Restaurant, (restaurant) => restaurant.favoriteUsers)
+  @JoinTable()
+  favoriteRestaurants: Restaurant[];
 }

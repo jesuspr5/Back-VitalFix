@@ -1,17 +1,27 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { RestaurantsService } from './../restaurants/restaurants.service';
+import {
+  Inject,
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+  forwardRef,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { FirebaseService } from '../firebase/firebase.service';
-import { PatchType } from 'src/common/enums/patch.enum';
+import { PatchType } from '../common/enums/patch.enum';
+import { AddFavoriteDto } from './dto/add-favorite.dto';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    @Inject(forwardRef(() => RestaurantsService))
+    private readonly restaurantsService: RestaurantsService,
     private readonly firebaseService: FirebaseService,
   ) {}
 
@@ -39,7 +49,10 @@ export class UsersService {
   }
 
   findOne(id: string) {
-    return this.userRepository.findOneBy({ id });
+    return this.userRepository.findOne({
+      where: { id },
+      relations: ['favoriteRestaurants'],
+    });
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
@@ -68,5 +81,41 @@ export class UsersService {
 
   remove(id: number) {
     return `This action removes a #${id} user`;
+  }
+
+  async addFavoriteRestaurant(addFavoriteDto: AddFavoriteDto): Promise<User> {
+    const user = await this.findOne('7281497e-47a5-47ac-abfb-02a607805737');
+    const { restaurantId } = addFavoriteDto;
+    const restaurant = await this.restaurantsService.findOne(restaurantId);
+
+    if (!user.favoriteRestaurants) {
+      user.favoriteRestaurants = [restaurant];
+      console.log('no tiene favorito');
+    } else {
+      console.log('si tiene favorito');
+      if (
+        !user.favoriteRestaurants.find(
+          (favRestaurant) => favRestaurant.id === restaurant.id,
+        )
+      ) {
+        console.log('lo agrega');
+        user.favoriteRestaurants.push(restaurant);
+        console.log(
+          '🚀 ~ file: users.service.ts:100 ~ UsersService ~ addFavoriteRestaurant ~ user:',
+          user,
+        );
+      } else {
+        throw new NotFoundException('Restaurant is already in favorites');
+      }
+    }
+    return this.userRepository.save(user);
+  }
+
+  async removeFavoriteRestaurant(restaurantId: string): Promise<User> {
+    const user = await this.findOne('7281497e-47a5-47ac-abfb-02a607805737');
+    user.favoriteRestaurants = user.favoriteRestaurants.filter(
+      (restaurant) => restaurant.id !== restaurantId,
+    );
+    return this.userRepository.save(user);
   }
 }
