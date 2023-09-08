@@ -14,6 +14,7 @@ import { User } from './entities/user.entity';
 import { FirebaseService } from '../firebase/firebase.service';
 import { PatchType } from '../common/enums/patch.enum';
 import { AddFavoriteDto } from './dto/add-favorite.dto';
+import { UserActiveInterface } from 'src/common/interfaces/user-active.interface';
 
 @Injectable()
 export class UsersService {
@@ -83,8 +84,11 @@ export class UsersService {
     return `This action removes a #${id} user`;
   }
 
-  async addFavoriteRestaurant(addFavoriteDto: AddFavoriteDto): Promise<User> {
-    const user = await this.findOne('7281497e-47a5-47ac-abfb-02a607805737');
+  async addFavoriteRestaurant(
+    addFavoriteDto: AddFavoriteDto,
+    userActive: UserActiveInterface,
+  ): Promise<User> {
+    const user = await this.findOne(userActive.id);
     const { restaurantId } = addFavoriteDto;
     const restaurant = await this.restaurantsService.findOne(restaurantId);
 

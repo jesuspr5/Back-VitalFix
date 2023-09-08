@@ -18,10 +18,14 @@ import { UsersService } from './users.service';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AddFavoriteDto } from './dto/add-favorite.dto';
+import { Auth } from 'src/auth/decorators/auth.decorator';
+import { Role } from 'src/common/enums/rol.enum';
+import { ActiveUser } from 'src/common/decorators/active-user.decorator';
+import { UserActiveInterface } from 'src/common/interfaces/user-active.interface';
 
 @ApiBearerAuth()
 @ApiTags('Users')
-//@Auth(Role.USER)
+@Auth(Role.USER)
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
@@ -32,8 +36,14 @@ export class UsersController {
   }
 
   @Post('favorites/add')
-  async addFavoriteRestaurant(@Body() addFavoriteDto: AddFavoriteDto) {
-    const user = await this.usersService.addFavoriteRestaurant(addFavoriteDto);
+  async addFavoriteRestaurant(
+    @Body() addFavoriteDto: AddFavoriteDto,
+    @ActiveUser() userActive: UserActiveInterface,
+  ) {
+    const user = await this.usersService.addFavoriteRestaurant(
+      addFavoriteDto,
+      userActive,
+    );
     return user;
   }
 
