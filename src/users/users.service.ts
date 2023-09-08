@@ -31,7 +31,11 @@ export class UsersService {
   }
 
   findAll() {
-    return this.userRepository.find({});
+    return this.userRepository.find({
+      relations: {
+        restaurants: true,
+      },
+    });
   }
 
   findOne(id: string) {

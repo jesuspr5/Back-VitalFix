@@ -18,8 +18,8 @@ export class RestaurantsService {
     @InjectRepository(RestaurantImage)
     private readonly restaurantImageRepository: Repository<RestaurantImage>,
     private readonly firebaseService: FirebaseService,
-  ) // private readonly userService: UsersService,
-  {}
+    private readonly userService: UsersService,
+  ) {}
 
   async create(
     createRestaurantDto: CreateRestaurantDto,
@@ -35,14 +35,15 @@ export class RestaurantsService {
         imagesUpload.push({ url });
       }
     }
-    /*     const user = await this.userService.findOne(
+    const user = await this.userService.findOne(
       '7281497e-47a5-47ac-abfb-02a607805737',
-    ); */
+    );
     const restaurant = this.restaurantRepository.create({
       ...createRestaurantDto,
       images: imagesUpload.map((image) =>
         this.restaurantImageRepository.create(image),
       ),
+      creator: user,
     });
     await this.restaurantRepository.save(restaurant);
 

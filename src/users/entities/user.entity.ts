@@ -54,6 +54,6 @@ export class User {
   comments: Comment[];
 
   // Relación uno a muchos con Restaurant
-  /*  @OneToMany(() => Restaurant, (restaurant) => restaurant.creator)
-  restaurants: Restaurant[]; */
+  @OneToMany(() => Restaurant, (restaurant) => restaurant.creator)
+  restaurants: Restaurant[];
 }

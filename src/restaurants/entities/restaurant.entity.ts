@@ -59,6 +59,6 @@ export class Restaurant {
   })
   updatedAt: Date;
   // Relación muchos a uno con User
-  /*   @ManyToOne(() => User, (user) => user.restaurants)
-  creator: User; */
+  @ManyToOne(() => User, (user) => user.restaurants)
+  creator: User;
 }
