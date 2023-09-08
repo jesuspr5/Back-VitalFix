@@ -9,6 +9,8 @@ import { FirebaseService } from '../firebase/firebase.service';
 import { PatchType } from '../common/enums/patch.enum';
 import { UrlUpload } from '../firebase/interface/firebase.interface';
 import { UsersService } from '../users/users.service';
+import { Rating } from './entities/rating.entity,';
+import { AddRatingToRestaurant } from './dto/add-rating-restaurant.dto';
 
 @Injectable()
 export class RestaurantsService {
@@ -17,6 +19,8 @@ export class RestaurantsService {
     private readonly restaurantRepository: Repository<Restaurant>,
     @InjectRepository(RestaurantImage)
     private readonly restaurantImageRepository: Repository<RestaurantImage>,
+    @InjectRepository(Rating)
+    private readonly ratingRepository: Repository<Rating>,
     private readonly firebaseService: FirebaseService,
     private readonly userService: UsersService,
   ) {}
@@ -76,6 +80,30 @@ export class RestaurantsService {
   async remove(id: string) {
     await this.findOne(id);
     return this.restaurantRepository.softRemove({ id });
+  }
+
+  async addRatingToRestaurant(
+    addRatingToRestaurant: AddRatingToRestaurant,
+  ): Promise<Rating> {
+    // Busca el restaurante en la base de datos
+    const { restaurantId, score } = addRatingToRestaurant;
+
+    const restaurant = await this.findOne(restaurantId);
+
+    // Obtén el usuario que está realizando la calificación
+    const user = await this.userService.findOne(
+      '7281497e-47a5-47ac-abfb-02a607805737',
+    );
+
+    // Crea una nueva calificación
+    const rating = this.ratingRepository.create({
+      score,
+      user,
+      restaurant,
+    });
+
+    // Guarda la calificación en la base de datos
+    return this.ratingRepository.save(rating);
   }
 
   async uploadImage(file: Express.Multer.File) {

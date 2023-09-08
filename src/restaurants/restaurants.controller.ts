@@ -18,6 +18,7 @@ import { CreateRestaurantDto } from './dto/create-restaurant.dto';
 import { UpdateRestaurantDto } from './dto/update-restaurant.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
+import { AddRatingToRestaurant } from './dto/add-rating-restaurant.dto';
 
 @ApiTags('Restaurants')
 @Controller('restaurants')
@@ -40,6 +41,13 @@ export class RestaurantsController {
     @Body() createRestaurantDto: CreateRestaurantDto,
   ) {
     return this.restaurantsService.create(createRestaurantDto, images);
+  }
+
+  @Post('/rating')
+  adaddRatingToRestaurant(
+    @Body() addRatingToRestaurant: AddRatingToRestaurant,
+  ) {
+    return this.restaurantsService.addRatingToRestaurant(addRatingToRestaurant);
   }
 
   @Get()
