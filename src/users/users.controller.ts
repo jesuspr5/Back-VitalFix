@@ -25,16 +25,15 @@ import { UserActiveInterface } from 'src/common/interfaces/user-active.interface
 
 @ApiBearerAuth()
 @ApiTags('Users')
-@Auth(Role.USER)
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
-
+  @Auth(Role.ADMIN)
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
   }
-
+  @Auth(Role.USER)
   @Post('favorites/add')
   async addFavoriteRestaurant(
     @Body() addFavoriteDto: AddFavoriteDto,
@@ -46,13 +45,13 @@ export class UsersController {
     );
     return user;
   }
-
+  @Auth(Role.USER)
   @Delete('favorites/remove/:id')
   async removeFavoriteRestaurant(@Param('id') restaurantId: string) {
     const user = await this.usersService.removeFavoriteRestaurant(restaurantId);
     return user;
   }
-
+  @Auth(Role.USER)
   @Patch('uploadImage/:id')
   @UseInterceptors(FileInterceptor('image'))
   uploadImage(
@@ -75,16 +74,17 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
+  @Auth(Role.ADMIN)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(id);
   }
-
+  @Auth(Role.ADMIN)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(id, updateUserDto);
   }
-
+  @Auth(Role.ADMIN)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.usersService.remove(+id);
