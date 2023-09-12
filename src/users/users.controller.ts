@@ -15,7 +15,7 @@ import {
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersService } from './users.service';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AddFavoriteDto } from './dto/add-favorite.dto';
 import { Auth } from 'src/auth/decorators/auth.decorator';
@@ -53,6 +53,18 @@ export class UsersController {
   }
   @Auth(Role.USER)
   @Patch('uploadImage/:id')
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        image: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
   @UseInterceptors(FileInterceptor('image'))
   uploadImage(
     @UploadedFile(

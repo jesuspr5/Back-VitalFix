@@ -6,7 +6,6 @@ import {
   Patch,
   Param,
   Delete,
-  UploadedFile,
   ParseFilePipe,
   MaxFileSizeValidator,
   FileTypeValidator,
@@ -16,8 +15,8 @@ import {
 import { RestaurantsService } from './restaurants.service';
 import { CreateRestaurantDto } from './dto/create-restaurant.dto';
 import { UpdateRestaurantDto } from './dto/update-restaurant.dto';
-import { ApiTags } from '@nestjs/swagger';
-import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
+import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
+import { FilesInterceptor } from '@nestjs/platform-express';
 import { AddRatingToRestaurant } from './dto/add-rating-restaurant.dto';
 
 @ApiTags('Restaurants')
@@ -27,6 +26,27 @@ export class RestaurantsController {
 
   @Post()
   @UseInterceptors(FilesInterceptor('images'))
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        name: { type: 'string' },
+        direction: { type: 'string' },
+        phone: { type: 'string' },
+        email: { type: 'string' },
+        description: { type: 'string' },
+        geolocation: { type: 'string' },
+        images: {
+          type: 'array',
+          items: {
+            type: 'string',
+            format: 'binary',
+          },
+        },
+      },
+    },
+  })
   create(
     @UploadedFiles(
       new ParseFilePipe({
