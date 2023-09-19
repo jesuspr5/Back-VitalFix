@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import * as bcryptjs from 'bcryptjs';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
@@ -15,6 +16,8 @@ import { FirebaseService } from '../firebase/firebase.service';
 import { PatchType } from '../common/enums/patch.enum';
 import { AddFavoriteDto } from './dto/add-favorite.dto';
 import { UserActiveInterface } from 'src/common/interfaces/user-active.interface';
+import { UpdateEmailDto } from './dto/update-email.dto';
+import { UpdatePasswordDto } from './dto/update-password.dto';
 
 @Injectable()
 export class UsersService {
@@ -61,6 +64,40 @@ export class UsersService {
     return this.userRepository.findOne({
       where: { id },
       relations: ['favoriteRestaurants'],
+    });
+  }
+
+  async updatePasswordEmail(id: string, updateEmailDto: UpdateEmailDto) {
+    const user = await this.findOne(id);
+    if (!user) {
+      throw new UnauthorizedException('id is wrong');
+    }
+
+    const currentPassword = await bcryptjs.hash(updateEmailDto.password, 10);
+
+    if (currentPassword !== user.password) {
+      throw new UnauthorizedException('password is incorrect');
+    }
+    return await this.userRepository.update(id, {
+      email: updateEmailDto.email,
+    });
+  }
+
+  async updatePassword(id: string, updatePasswordDto: UpdatePasswordDto) {
+    const user = await this.findOne(id);
+    if (!user) {
+      throw new UnauthorizedException('id is wrong');
+    }
+
+    const currentPassword = await bcryptjs.hash(updatePasswordDto.password, 10);
+
+    if (currentPassword !== user.password) {
+      throw new UnauthorizedException('password is incorrect');
+    }
+
+    const newPassword = await bcryptjs.hash(updatePasswordDto.newPassword, 10);
+    return await this.userRepository.update(id, {
+      password: newPassword,
     });
   }
 

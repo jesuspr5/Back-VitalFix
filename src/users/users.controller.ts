@@ -18,10 +18,12 @@ import { UsersService } from './users.service';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AddFavoriteDto } from './dto/add-favorite.dto';
-import { Auth } from 'src/auth/decorators/auth.decorator';
-import { Role } from 'src/common/enums/rol.enum';
-import { ActiveUser } from 'src/common/decorators/active-user.decorator';
-import { UserActiveInterface } from 'src/common/interfaces/user-active.interface';
+import { Auth } from '../auth/decorators/auth.decorator';
+import { Role } from '../common/enums/rol.enum';
+import { ActiveUser } from '../common/decorators/active-user.decorator';
+import { UserActiveInterface } from '../common/interfaces/user-active.interface';
+import { UpdateEmailDto } from './dto/update-email.dto';
+import { UpdatePasswordDto } from './dto/update-password.dto';
 
 @ApiBearerAuth()
 @ApiTags('Users')
@@ -96,6 +98,25 @@ export class UsersController {
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(id, updateUserDto);
   }
+
+  @Auth(Role.USER)
+  @Patch(':id')
+  updatePasswordEmail(
+    @Param('id') id: string,
+    @Body() updateEmailDto: UpdateEmailDto,
+  ) {
+    return this.usersService.updatePasswordEmail(id, updateEmailDto);
+  }
+
+  @Auth(Role.USER)
+  @Patch(':id')
+  updatePassword(
+    @Param('id') id: string,
+    @Body() updatePasswordDto: UpdatePasswordDto,
+  ) {
+    return this.usersService.updatePassword(id, updatePasswordDto);
+  }
+
   @Auth(Role.ADMIN)
   @Delete(':id')
   remove(@Param('id') id: string) {
