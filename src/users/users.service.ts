@@ -73,9 +73,11 @@ export class UsersService {
       throw new UnauthorizedException('id is wrong');
     }
 
-    const currentPassword = await bcryptjs.hash(updateEmailDto.password, 10);
-
-    if (currentPassword !== user.password) {
+    const isPasswordValid = await bcryptjs.compare(
+      updateEmailDto.password,
+      user.password,
+    );
+    if (!isPasswordValid) {
       throw new UnauthorizedException('password is incorrect');
     }
     return await this.userRepository.update(id, {
