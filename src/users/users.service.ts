@@ -18,6 +18,7 @@ import { AddFavoriteDto } from './dto/add-favorite.dto';
 import { UserActiveInterface } from 'src/common/interfaces/user-active.interface';
 import { UpdateEmailDto } from './dto/update-email.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
+import { UpdateProfileDto } from './dto/update-profile.dto';
 
 @Injectable()
 export class UsersService {
@@ -52,6 +53,21 @@ export class UsersService {
     });
   }
 
+  findById(id: string) {
+    return this.userRepository.findOne({
+      where: { id },
+      select: [
+        'id',
+        'name',
+        'email',
+        'password',
+        'role',
+        'urlAvatar',
+        'lastname',
+      ],
+    });
+  }
+
   findAll() {
     return this.userRepository.find({
       relations: {
@@ -68,7 +84,7 @@ export class UsersService {
   }
 
   async updatePasswordEmail(id: string, updateEmailDto: UpdateEmailDto) {
-    const user = await this.findOne(id);
+    const user = await this.findById(id);
     if (!user) {
       throw new UnauthorizedException('id is wrong');
     }
@@ -80,13 +96,15 @@ export class UsersService {
     if (!isPasswordValid) {
       throw new UnauthorizedException('password is incorrect');
     }
-    return await this.userRepository.update(id, {
+    await this.userRepository.update(id, {
       email: updateEmailDto.email,
     });
+    return;
   }
 
   async updatePassword(id: string, updatePasswordDto: UpdatePasswordDto) {
-    const user = await this.findOne(id);
+    const user = await this.findById(id);
+
     if (!user) {
       throw new UnauthorizedException('id is wrong');
     }
@@ -98,11 +116,11 @@ export class UsersService {
     if (!isPasswordValid) {
       throw new UnauthorizedException('password is incorrect');
     }
-
     const newPassword = await bcryptjs.hash(updatePasswordDto.newPassword, 10);
-    return await this.userRepository.update(id, {
+    await this.userRepository.update(id, {
       password: newPassword,
     });
+    return;
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
@@ -111,6 +129,15 @@ export class UsersService {
       throw new UnauthorizedException('id is wrong');
     }
     return await this.userRepository.update(id, { ...updateUserDto });
+  }
+
+  async updateProfile(id: string, updateProfileDto: UpdateProfileDto) {
+    const user = await this.findOne(id);
+    if (!user) {
+      throw new UnauthorizedException('id is wrong');
+    }
+    await this.userRepository.update(id, { ...updateProfileDto });
+    return;
   }
 
   async uploadImageProfile(id: string, image: Express.Multer.File) {

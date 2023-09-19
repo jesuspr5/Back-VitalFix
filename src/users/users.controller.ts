@@ -24,6 +24,7 @@ import { ActiveUser } from '../common/decorators/active-user.decorator';
 import { UserActiveInterface } from '../common/interfaces/user-active.interface';
 import { UpdateEmailDto } from './dto/update-email.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
+import { UpdateProfileDto } from './dto/update-profile.dto';
 
 @ApiBearerAuth()
 @ApiTags('Users')
@@ -100,7 +101,16 @@ export class UsersController {
   }
 
   @Auth(Role.USER)
-  @Patch('uploadEmail/:id')
+  @Patch('updateProfile/:id')
+  updateProfile(
+    @Param('id') id: string,
+    @Body() updateProfileDto: UpdateProfileDto,
+  ) {
+    return this.usersService.updateProfile(id, updateProfileDto);
+  }
+
+  @Auth(Role.USER)
+  @Patch('updateEmail/:id')
   updatePasswordEmail(
     @Param('id') id: string,
     @Body() updateEmailDto: UpdateEmailDto,
