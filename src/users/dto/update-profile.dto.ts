@@ -5,10 +5,10 @@ export class UpdateProfileDto {
   @Transform(({ value }) => value.trim())
   @IsString()
   @MinLength(1)
-  name?: string;
+  name: string;
 
   @Transform(({ value }) => value.trim())
   @IsString()
   @MinLength(1)
-  lastname?: string;
+  lastname: string;
 }
