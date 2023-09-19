@@ -85,7 +85,9 @@ export class UsersService {
       image,
       PatchType.PROFILES,
     );
-    return await this.userRepository.update(id, { urlAvatar: url });
+    await this.userRepository.update(id, { urlAvatar: url });
+
+    return { urlAvatar: url };
   }
 
   remove(id: number) {
