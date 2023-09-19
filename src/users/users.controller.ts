@@ -100,7 +100,7 @@ export class UsersController {
   }
 
   @Auth(Role.USER)
-  @Patch(':id')
+  @Patch('uploadEmail/:id')
   updatePasswordEmail(
     @Param('id') id: string,
     @Body() updateEmailDto: UpdateEmailDto,
@@ -109,7 +109,7 @@ export class UsersController {
   }
 
   @Auth(Role.USER)
-  @Patch(':id')
+  @Patch('updatePassword/:id')
   updatePassword(
     @Param('id') id: string,
     @Body() updatePasswordDto: UpdatePasswordDto,
