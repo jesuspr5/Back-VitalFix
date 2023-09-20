@@ -1,5 +1,6 @@
 import { RestaurantsService } from './../restaurants/restaurants.service';
 import {
+  BadRequestException,
   Inject,
   Injectable,
   NotFoundException,
@@ -87,6 +88,12 @@ export class UsersService {
     const user = await this.findById(id);
     if (!user) {
       throw new UnauthorizedException('id is wrong');
+    }
+
+    const responseUser = await this.findOneByEmail(updateEmailDto.email);
+
+    if (responseUser) {
+      throw new BadRequestException('Email already exists');
     }
 
     const isPasswordValid = await bcryptjs.compare(
