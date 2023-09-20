@@ -90,7 +90,7 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
-  //@Auth(Role.USER)
+  @Auth(Role.USER)
   @Get('searchAddress/:id/:lat/:lng')
   searchAddressGoogleMapByLatLng(@Param() searchGoogleMap: SearchGoogleMap) {
     return this.usersService.searchAddressGoogleMapByLatLng(searchGoogleMap);
