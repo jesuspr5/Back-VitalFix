@@ -91,7 +91,7 @@ export class UsersController {
   }
 
   //@Auth(Role.USER)
-  @Get('/searchAddress:id/:lat/:lng')
+  @Get('searchAddress/:id/:lat/:lng')
   searchAddressGoogleMapByLatLng(@Param() searchGoogleMap: SearchGoogleMap) {
     return this.usersService.searchAddressGoogleMapByLatLng(searchGoogleMap);
   }
