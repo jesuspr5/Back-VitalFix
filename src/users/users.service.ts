@@ -20,6 +20,8 @@ import { UserActiveInterface } from 'src/common/interfaces/user-active.interface
 import { UpdateEmailDto } from './dto/update-email.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
+import { ConfigService } from '@nestjs/config';
+import { SearchGoogleMap } from './dto/api-google-map.dto';
 
 @Injectable()
 export class UsersService {
@@ -29,6 +31,7 @@ export class UsersService {
     @Inject(forwardRef(() => RestaurantsService))
     private readonly restaurantsService: RestaurantsService,
     private readonly firebaseService: FirebaseService,
+    private readonly configService: ConfigService,
   ) {}
 
   create(createUserDto: CreateUserDto) {
@@ -37,6 +40,20 @@ export class UsersService {
 
   findOneByEmail(email: string) {
     return this.userRepository.findOneBy({ email });
+  }
+
+  async searchAddressGoogleMapByLatLng(searchGoogleMap: SearchGoogleMap) {
+    const apiKey = this.configService.get<string>('keyGoogleMaps');
+    const latlng = `${searchGoogleMap.lat},${searchGoogleMap.lng}`;
+    const user = await this.findById(searchGoogleMap.id);
+    if (!user) {
+      throw new UnauthorizedException('id is wrong');
+    }
+    const response = await fetch(
+      `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latlng}&key=${apiKey}`,
+    );
+    const data = await response.json();
+    return data;
   }
 
   findByEmailWithPassword(email: string) {

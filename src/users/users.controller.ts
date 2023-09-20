@@ -25,6 +25,7 @@ import { UserActiveInterface } from '../common/interfaces/user-active.interface'
 import { UpdateEmailDto } from './dto/update-email.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
+import { SearchGoogleMap } from './dto/api-google-map.dto';
 
 @ApiBearerAuth()
 @ApiTags('Users')
@@ -87,6 +88,12 @@ export class UsersController {
   @Get()
   findAll() {
     return this.usersService.findAll();
+  }
+
+  //@Auth(Role.USER)
+  @Get('/searchAddress:id/:lat/:lng')
+  searchAddressGoogleMapByLatLng(@Param() searchGoogleMap: SearchGoogleMap) {
+    return this.usersService.searchAddressGoogleMapByLatLng(searchGoogleMap);
   }
 
   @Auth(Role.ADMIN)
