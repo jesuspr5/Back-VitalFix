@@ -99,7 +99,7 @@ export class UsersService {
     await this.userRepository.update(id, {
       email: updateEmailDto.email,
     });
-    return;
+    return { message: 'correct' };
   }
 
   async updatePassword(id: string, updatePasswordDto: UpdatePasswordDto) {
@@ -120,7 +120,7 @@ export class UsersService {
     await this.userRepository.update(id, {
       password: newPassword,
     });
-    return;
+    return { message: 'correct' };
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
@@ -137,7 +137,9 @@ export class UsersService {
       throw new UnauthorizedException('id is wrong');
     }
     await this.userRepository.update(id, { ...updateProfileDto });
-    return;
+    return {
+      displayName: `${updateProfileDto.name} ${updateProfileDto.lastname}`,
+    };
   }
 
   async uploadImageProfile(id: string, image: Express.Multer.File) {
