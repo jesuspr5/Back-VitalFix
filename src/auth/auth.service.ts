@@ -58,7 +58,7 @@ export class AuthService {
       token,
       email,
       name: user.name,
-      lastName: user.lastname,
+      lastname: user.lastname,
       urlAvatar: user.urlAvatar ? user.urlAvatar : '',
       displayName: `${user.name ? user.name : ''} ${
         user.lastname ? user.lastname : ''
