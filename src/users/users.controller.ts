@@ -61,7 +61,7 @@ export class UsersController {
       userActive,
     );
   }
-
+  @Auth(Role.USER)
   @Get('favorites')
   async findAllFavoritesByUser(@ActiveUser() userActive: UserActiveInterface) {
     return await this.usersService.findAllFavoritesByUser(userActive);
