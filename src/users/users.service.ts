@@ -258,7 +258,6 @@ export class UsersService {
     userActive: UserActiveInterface,
   ): Promise<Restaurant[]> {
     const user = await this.findOne(userActive.id);
-    console.log('🚀 ~ file: users.service.ts:261 ~ UsersService ~ user:', user);
     if (!user) {
       throw new UnauthorizedException('userId is wrong');
     }
