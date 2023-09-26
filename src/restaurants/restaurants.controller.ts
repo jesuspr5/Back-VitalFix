@@ -11,16 +11,29 @@ import {
   FileTypeValidator,
   UseInterceptors,
   UploadedFiles,
+  Query,
 } from '@nestjs/common';
 import { RestaurantsService } from './restaurants.service';
 import { CreateRestaurantDto } from './dto/create-restaurant.dto';
 import { UpdateRestaurantDto } from './dto/update-restaurant.dto';
-import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiConsumes,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { AddRatingToRestaurant } from './dto/add-rating-restaurant.dto';
 import { ActiveUser } from 'src/common/decorators/active-user.decorator';
 import { UserActiveInterface } from 'src/common/interfaces/user-active.interface';
+import { PaginationDto } from './dto/pagination.dto';
+import { FindRestaurantDto } from './dto/findRestaurants.dto';
+import { Auth } from '../auth/decorators/auth.decorator';
+import { Role } from 'src/common/enums/rol.enum';
 
+@ApiBearerAuth()
 @ApiTags('Restaurants')
 @Controller('restaurants')
 export class RestaurantsController {
@@ -69,9 +82,9 @@ export class RestaurantsController {
       userActive,
     );
   }
-
+  @Auth(Role.USER)
   @Post('/rating')
-  adaddRatingToRestaurant(
+  addRatingToRestaurant(
     @Body() addRatingToRestaurant: AddRatingToRestaurant,
     userActive: UserActiveInterface,
   ) {
@@ -81,16 +94,41 @@ export class RestaurantsController {
     );
   }
 
+  @Auth(Role.USER)
+  @ApiOperation({ summary: 'Get all restaurants' })
+  @ApiResponse({ status: 200, description: 'Success' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
   @Get()
-  findAll() {
-    return this.restaurantsService.findAll();
+  async findFilterAll(
+    @Query() pagination: PaginationDto,
+    @Query() query: FindRestaurantDto,
+  ): Promise<{
+    pagging: { quantity: number; limit: number; offset: number };
+    results: any[];
+    totalPages: number;
+  }> {
+    const response = await this.restaurantsService.findFilterAll(
+      query,
+      pagination.limit,
+      pagination.offset,
+    );
+    const totalPages = Math.ceil(
+      response.pagination.quantity / response.pagination.limit,
+    );
+    return {
+      pagging: response.pagination,
+      results: response.results,
+      totalPages: totalPages ? totalPages : response.pagination.quantity,
+    };
   }
 
+  @Auth(Role.USER)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.restaurantsService.findOne(id);
   }
 
+  @Auth(Role.USER)
   @Patch(':id')
   update(
     @Param('id') id: string,
@@ -99,6 +137,7 @@ export class RestaurantsController {
     return this.restaurantsService.update(id, updateRestaurantDto);
   }
 
+  @Auth(Role.USER)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.restaurantsService.remove(id);

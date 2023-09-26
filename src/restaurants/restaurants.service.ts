@@ -9,7 +9,7 @@ import { CreateRestaurantDto } from './dto/create-restaurant.dto';
 import { UpdateRestaurantDto } from './dto/update-restaurant.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Restaurant } from './entities/restaurant.entity';
-import { Repository } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 import { RestaurantImage } from './entities/restaurant-images.entity';
 import { FirebaseService } from '../firebase/firebase.service';
 import { PatchType } from '../common/enums/patch.enum';
@@ -17,6 +17,7 @@ import { UrlUpload } from '../firebase/interface/firebase.interface';
 import { UsersService } from '../users/users.service';
 import { Rating } from './entities/rating.entity,';
 import { AddRatingToRestaurant } from './dto/add-rating-restaurant.dto';
+import { FindRestaurantDto } from './dto/findRestaurants.dto';
 
 @Injectable()
 export class RestaurantsService {
@@ -67,6 +68,41 @@ export class RestaurantsService {
     return await this.restaurantRepository.find({
       relations: ['images', 'comments', 'comments.user'],
     });
+  }
+
+  async findFilterAll(
+    query: FindRestaurantDto,
+    limit: number,
+    offset: number,
+  ): Promise<{
+    pagination: { quantity: number; limit: number; offset: number };
+    results: Restaurant[];
+  }> {
+    try {
+      const where = this.getFilterFromQuery(query);
+      const order = this.getOrderFromQuery(query);
+
+      const result = await this.restaurantRepository.findAndCount({
+        where: where,
+        order: order,
+        skip: offset,
+        take: limit,
+      });
+
+      return {
+        pagination: {
+          quantity: result[1],
+          limit,
+          offset,
+        },
+        results: result[0],
+      };
+    } catch (error) {
+      console.log(
+        '🚀 ~ file: restaurants.service.ts:108 ~ RestaurantsService ~ error:',
+        error,
+      );
+    }
   }
 
   async findOne(id: string) {
@@ -124,5 +160,42 @@ export class RestaurantsService {
     //const rest = await this.findOne(uploadGalleryDto.restaurant);
 
     return; //await this.galleyRepository.save(createGalleryDto);
+  }
+
+  private getFilterFromQuery(query: FindRestaurantDto) {
+    const where: any[] = [];
+
+    if (query.search) {
+      where.push(
+        {
+          name: ILike(`%${query.search}%`),
+        },
+        {
+          description: ILike(`%${query.search}%`),
+        },
+        {
+          id: ILike(`%${query.search}%`),
+        },
+      );
+    }
+    return where;
+  }
+
+  private getOrderFromQuery(query: FindRestaurantDto) {
+    const queryOrder = query.order ?? 'ASC';
+
+    if (query.orderBy === 'createdAt') {
+      return {
+        updatedAt: queryOrder,
+      };
+    } else if (query.orderBy === 'updatedAt') {
+      return {
+        quantity: queryOrder,
+      };
+    } else {
+      return {
+        createdAt: queryOrder,
+      };
+    }
   }
 }

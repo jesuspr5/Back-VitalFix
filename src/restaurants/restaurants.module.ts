@@ -8,10 +8,12 @@ import { UsersModule } from '../users/users.module';
 import { Rating } from './entities/rating.entity,';
 import { FirebaseModule } from '../firebase/firebase.module';
 import { FirebaseService } from 'src/firebase/firebase.service';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
   imports: [
     forwardRef(() => UsersModule),
+    forwardRef(() => AuthModule),
     FirebaseModule,
     TypeOrmModule.forFeature([Restaurant, RestaurantImage, Rating]),
   ],
