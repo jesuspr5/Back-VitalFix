@@ -62,6 +62,11 @@ export class UsersController {
     );
   }
 
+  @Get('favorites')
+  async findAllFavoritesByUser(@ActiveUser() userActive: UserActiveInterface) {
+    return await this.usersService.findAllFavoritesByUser(userActive);
+  }
+
   @Auth(Role.USER)
   @Delete('favorites/remove/:id')
   async removeFavoriteRestaurant(

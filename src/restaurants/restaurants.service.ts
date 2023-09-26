@@ -93,6 +93,7 @@ export class RestaurantsService {
 
   async addRatingToRestaurant(
     addRatingToRestaurant: AddRatingToRestaurant,
+    userActive: UserActiveInterface,
   ): Promise<Rating> {
     // Busca el restaurante en la base de datos
     const { restaurantId, score } = addRatingToRestaurant;
@@ -100,10 +101,10 @@ export class RestaurantsService {
     const restaurant = await this.findOne(restaurantId);
 
     // Obtén el usuario que está realizando la calificación
-    const user = await this.userService.findOne(
-      '7281497e-47a5-47ac-abfb-02a607805737',
-    );
-
+    const user = await this.userService.findOne(userActive.id);
+    if (!user) {
+      throw new BadRequestException('User not found');
+    }
     // Crea una nueva calificación
     const rating = this.ratingRepository.create({
       score,

@@ -22,6 +22,7 @@ import { UpdatePasswordDto } from './dto/update-password.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 import { ConfigService } from '@nestjs/config';
 import { SearchGoogleMap } from './dto/api-google-map.dto';
+import { Restaurant } from 'src/restaurants/entities/restaurant.entity';
 
 @Injectable()
 export class UsersService {
@@ -251,5 +252,16 @@ export class UsersService {
       (restaurant) => restaurant.id === restaurantId,
     );
     return favoriteRestaurants.length ? true : false;
+  }
+
+  async findAllFavoritesByUser(
+    userActive: UserActiveInterface,
+  ): Promise<Restaurant[]> {
+    const user = await this.findOne(userActive.id);
+    if (!user) {
+      throw new UnauthorizedException('userId is wrong');
+    }
+    const { favoriteRestaurants } = user;
+    return favoriteRestaurants;
   }
 }
