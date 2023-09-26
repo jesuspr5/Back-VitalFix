@@ -73,8 +73,12 @@ export class RestaurantsController {
   @Post('/rating')
   adaddRatingToRestaurant(
     @Body() addRatingToRestaurant: AddRatingToRestaurant,
+    userActive: UserActiveInterface,
   ) {
-    return this.restaurantsService.addRatingToRestaurant(addRatingToRestaurant);
+    return this.restaurantsService.addRatingToRestaurant(
+      addRatingToRestaurant,
+      userActive,
+    );
   }
 
   @Get()
