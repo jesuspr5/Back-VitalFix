@@ -56,6 +56,10 @@ export class UsersController {
     @Param('id') restaurantId: string,
     @ActiveUser() userActive: UserActiveInterface,
   ) {
+    console.log(
+      '🚀 ~ file: users.controller.ts:59 ~ UsersController ~ userActive:',
+      userActive,
+    );
     return await this.usersService.findFavoriteRestaurantByIdAndUser(
       restaurantId,
       userActive,
@@ -64,6 +68,10 @@ export class UsersController {
   @Auth(Role.USER)
   @Get('favorites')
   async findAllFavoritesByUser(@ActiveUser() userActive: UserActiveInterface) {
+    console.log(
+      '🚀 ~ file: users.controller.ts:67 ~ UsersController ~ findAllFavoritesByUser ~ userActive:',
+      userActive,
+    );
     return await this.usersService.findAllFavoritesByUser(userActive);
   }
 
