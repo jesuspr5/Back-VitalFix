@@ -49,10 +49,29 @@ export class UsersController {
     );
     return user;
   }
+
+  @Auth(Role.USER)
+  @Get('favorites')
+  async findFavoriteRestaurantByIdAndUser(
+    @Param('id') restaurantId: string,
+    @ActiveUser() userActive: UserActiveInterface,
+  ) {
+    return await this.usersService.findFavoriteRestaurantByIdAndUser(
+      restaurantId,
+      userActive,
+    );
+  }
+
   @Auth(Role.USER)
   @Delete('favorites/remove/:id')
-  async removeFavoriteRestaurant(@Param('id') restaurantId: string) {
-    const user = await this.usersService.removeFavoriteRestaurant(restaurantId);
+  async removeFavoriteRestaurant(
+    @Param('id') restaurantId: string,
+    @ActiveUser() userActive: UserActiveInterface,
+  ) {
+    const user = await this.usersService.removeFavoriteRestaurant(
+      restaurantId,
+      userActive,
+    );
     return user;
   }
   @Auth(Role.USER)

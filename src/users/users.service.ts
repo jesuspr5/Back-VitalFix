@@ -219,11 +219,31 @@ export class UsersService {
     return this.userRepository.save(user);
   }
 
-  async removeFavoriteRestaurant(restaurantId: string): Promise<User> {
+  async removeFavoriteRestaurant(
+    restaurantId: string,
+    userActive: UserActiveInterface,
+  ): Promise<User> {
     const user = await this.findOne('7281497e-47a5-47ac-abfb-02a607805737');
     user.favoriteRestaurants = user.favoriteRestaurants.filter(
       (restaurant) => restaurant.id !== restaurantId,
     );
     return this.userRepository.save(user);
+  }
+
+  async findFavoriteRestaurantByIdAndUser(
+    restaurantId: string,
+    userActive: UserActiveInterface,
+  ): Promise<Boolean> {
+    const user = await this.findOne(userActive.id);
+    if (!user) {
+      throw new UnauthorizedException('id is wrong');
+    }
+    if (!user.favoriteRestaurants) {
+      return false;
+    }
+    const favoriteRestaurants = user.favoriteRestaurants.filter(
+      (restaurant) => restaurant.id === restaurantId,
+    );
+    return favoriteRestaurants.length ? true : false;
   }
 }

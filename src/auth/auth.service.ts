@@ -1,7 +1,9 @@
 import {
   BadRequestException,
+  Inject,
   Injectable,
   UnauthorizedException,
+  forwardRef,
 } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
 import { RegisterDto } from './dto/register.dto';
@@ -13,7 +15,9 @@ import { LoginDto } from './dto/login.dto';
 @Injectable()
 export class AuthService {
   constructor(
+    @Inject(forwardRef(() => UsersService))
     private readonly usersService: UsersService,
+    @Inject(forwardRef(() => JwtService))
     private readonly jwtService: JwtService,
   ) {}
 

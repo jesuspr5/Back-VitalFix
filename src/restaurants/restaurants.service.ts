@@ -1,3 +1,4 @@
+import { UserActiveInterface } from './../common/interfaces/user-active.interface';
 import {
   BadRequestException,
   Inject,
@@ -34,6 +35,7 @@ export class RestaurantsService {
   async create(
     createRestaurantDto: CreateRestaurantDto,
     images: Array<Express.Multer.File>,
+    userActive: UserActiveInterface,
   ) {
     let imagesUpload: UrlUpload[] = [];
     if (images) {
@@ -45,9 +47,10 @@ export class RestaurantsService {
         imagesUpload.push({ url });
       }
     }
-    const user = await this.userService.findOne(
-      '7281497e-47a5-47ac-abfb-02a607805737',
-    );
+    const user = await this.userService.findOne(userActive.id);
+    if (!user) {
+      throw new BadRequestException('User not found');
+    }
     const restaurant = this.restaurantRepository.create({
       ...createRestaurantDto,
       images: imagesUpload.map((image) =>

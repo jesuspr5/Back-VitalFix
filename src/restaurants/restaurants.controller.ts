@@ -18,6 +18,8 @@ import { UpdateRestaurantDto } from './dto/update-restaurant.dto';
 import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { AddRatingToRestaurant } from './dto/add-rating-restaurant.dto';
+import { ActiveUser } from 'src/common/decorators/active-user.decorator';
+import { UserActiveInterface } from 'src/common/interfaces/user-active.interface';
 
 @ApiTags('Restaurants')
 @Controller('restaurants')
@@ -59,8 +61,13 @@ export class RestaurantsController {
     )
     images: Array<Express.Multer.File>,
     @Body() createRestaurantDto: CreateRestaurantDto,
+    @ActiveUser() userActive: UserActiveInterface,
   ) {
-    return this.restaurantsService.create(createRestaurantDto, images);
+    return this.restaurantsService.create(
+      createRestaurantDto,
+      images,
+      userActive,
+    );
   }
 
   @Post('/rating')
