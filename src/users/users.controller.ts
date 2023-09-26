@@ -51,7 +51,7 @@ export class UsersController {
   }
 
   @Auth(Role.USER)
-  @Get('favorites')
+  @Get('favorites/:id')
   async findFavoriteRestaurantByIdAndUser(
     @Param('id') restaurantId: string,
     @ActiveUser() userActive: UserActiveInterface,
