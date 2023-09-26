@@ -110,7 +110,7 @@ export class UsersController {
   }
   @Auth(Role.USER)
   @Get()
-  findAll(@ActiveUser() userActive: UserActiveInterface) {
+  findAll() {
     return this.usersService.findAll();
   }
 
