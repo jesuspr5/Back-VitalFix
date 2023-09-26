@@ -193,6 +193,9 @@ export class UsersService {
     userActive: UserActiveInterface,
   ): Promise<User> {
     const user = await this.findOne(userActive.id);
+    if (!user) {
+      throw new UnauthorizedException('userId is wrong');
+    }
     const { restaurantId } = addFavoriteDto;
     const restaurant = await this.restaurantsService.findOne(restaurantId);
 
@@ -223,7 +226,10 @@ export class UsersService {
     restaurantId: string,
     userActive: UserActiveInterface,
   ): Promise<User> {
-    const user = await this.findOne('7281497e-47a5-47ac-abfb-02a607805737');
+    const user = await this.findOne(userActive.id);
+    if (!user) {
+      throw new UnauthorizedException('userId is wrong');
+    }
     user.favoriteRestaurants = user.favoriteRestaurants.filter(
       (restaurant) => restaurant.id !== restaurantId,
     );
@@ -236,7 +242,7 @@ export class UsersService {
   ): Promise<Boolean> {
     const user = await this.findOne(userActive.id);
     if (!user) {
-      throw new UnauthorizedException('id is wrong');
+      throw new UnauthorizedException('userId is wrong');
     }
     if (!user.favoriteRestaurants) {
       return false;
