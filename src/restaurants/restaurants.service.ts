@@ -84,7 +84,7 @@ export class RestaurantsService {
         order: order,
         skip: offset,
         take: limit,
-        relations: ['images', 'comments', 'comments.user'],
+        relations: ['images'],
       });
 
       return {
@@ -104,7 +104,12 @@ export class RestaurantsService {
   }
 
   async findOne(id: string) {
-    const restaurant = await this.restaurantRepository.findOneBy({ id });
+    const restaurant = await this.restaurantRepository.findOne({
+      where: {
+        id,
+      },
+      relations: ['images', 'comments', 'comments.user'],
+    });
     if (!restaurant) {
       throw new BadRequestException('Restaurant not found');
     }
