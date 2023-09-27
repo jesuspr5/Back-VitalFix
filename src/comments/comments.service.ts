@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { RestaurantsService } from '../restaurants/restaurants.service';
+import { UserActiveInterface } from 'src/common/interfaces/user-active.interface';
 
 @Injectable()
 export class CommentsService {
@@ -20,24 +21,38 @@ export class CommentsService {
     private readonly restaurantsService: RestaurantsService,
   ) {}
 
-  async create(CreateCommentDto: CreateCommentDto) {
-    const { text, userId, restaurantId } = CreateCommentDto;
-    const user = await this.usersService.findOne(userId);
+  async create(
+    CreateCommentDto: CreateCommentDto,
+    userActive: UserActiveInterface,
+  ) {
+    const { text, restaurantId, score } = CreateCommentDto;
+    const user = await this.usersService.findOne(userActive.id);
     if (!user) {
       throw new UnauthorizedException('userId is wrong');
     }
-
     const restaurant = await this.restaurantsService.findOne(restaurantId);
 
     if (!restaurant) {
       throw new UnauthorizedException('restauratId is wrong');
     }
+
+    const commentUser = await this.findOneByUserAndRestaurant(
+      user.id,
+      restaurantId,
+    );
+
+    if (commentUser) {
+      throw new UnauthorizedException('Commentary already exists for user');
+    }
     const comment = this.comentRepository.create({
       text,
       user,
       restaurant,
+      score,
     });
-    return await this.comentRepository.save(comment);
+
+    await this.comentRepository.save(comment);
+    return;
   }
 
   async findAll() {
@@ -50,6 +65,16 @@ export class CommentsService {
       throw new BadRequestException('comment not found');
     }
     return coment;
+  }
+
+  async findOneByUserAndRestaurant(userId: string, restaurantId: string) {
+    const comments = await this.comentRepository.findOne({
+      where: {
+        user: { id: userId },
+        restaurant: { id: restaurantId },
+      },
+    });
+    return comments;
   }
 
   async update(id: string, UpdateCommentDto: UpdateCommentDto) {

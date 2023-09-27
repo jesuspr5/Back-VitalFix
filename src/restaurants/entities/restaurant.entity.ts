@@ -8,6 +8,7 @@ import {
   CreateDateColumn,
   ManyToOne,
   ManyToMany,
+  Index,
 } from 'typeorm';
 import { RestaurantImage } from './restaurant-images.entity';
 import { Comment } from '../../comments/entities/comment.entity';
@@ -15,9 +16,11 @@ import { User } from '../../users/entities/user.entity';
 
 @Entity()
 export class Restaurant {
+  @Index()
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Index()
   @Column()
   name: string;
 
@@ -28,6 +31,7 @@ export class Restaurant {
   @Column()
   email: string;
 
+  @Index()
   @Column({ nullable: true })
   description?: string;
 

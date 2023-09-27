@@ -84,6 +84,7 @@ export class RestaurantsService {
         order: order,
         skip: offset,
         take: limit,
+        relations: ['images', 'comments', 'comments.user'],
       });
 
       return {
@@ -123,31 +124,6 @@ export class RestaurantsService {
     await this.findOne(id);
     return this.restaurantRepository.softRemove({ id });
   }
-
-  /*   async addRatingToRestaurant(
-    addRatingToRestaurant: AddRatingToRestaurant,
-    userActive: UserActiveInterface,
-  ): Promise<Rating> {
-    // Busca el restaurante en la base de datos
-    const { restaurantId, score } = addRatingToRestaurant;
-
-    const restaurant = await this.findOne(restaurantId);
-
-    // Obtén el usuario que está realizando la calificación
-    const user = await this.userService.findOne(userActive.id);
-    if (!user) {
-      throw new BadRequestException('User not found');
-    }
-    // Crea una nueva calificación
-    const rating = this.ratingRepository.create({
-      score,
-      user,
-      restaurant,
-    });
-
-    // Guarda la calificación en la base de datos
-    return this.ratingRepository.save(rating);
-  } */
 
   async uploadImage(file: Express.Multer.File) {
     console.log(

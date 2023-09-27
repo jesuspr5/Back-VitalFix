@@ -81,17 +81,6 @@ export class RestaurantsController {
       userActive,
     );
   }
-  /*   @Auth(Role.USER)
-  @Post('/rating')
-  addRatingToRestaurant(
-    @Body() addRatingToRestaurant: AddRatingToRestaurant,
-    userActive: UserActiveInterface,
-  ) {
-    return this.restaurantsService.addRatingToRestaurant(
-      addRatingToRestaurant,
-      userActive,
-    );
-  } */
 
   @Auth(Role.USER)
   @ApiOperation({ summary: 'Get all restaurants' })
