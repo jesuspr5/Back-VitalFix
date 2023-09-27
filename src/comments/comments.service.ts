@@ -45,7 +45,7 @@ export class CommentsService {
       commentUser,
     );
 
-    if (commentUser !== null) {
+    if (commentUser.data !== null) {
       throw new UnauthorizedException('Commentary already exists for user');
     }
     const comment = this.comentRepository.create({
