@@ -74,7 +74,7 @@ export class CommentsService {
         restaurant: { id: restaurantId },
       },
     });
-    return comments;
+    return { data: comments };
   }
 
   async update(id: string, UpdateCommentDto: UpdateCommentDto) {
