@@ -115,6 +115,11 @@ export class RestaurantsController {
     return this.restaurantsService.findOne(id);
   }
 
+  @Get('/comments/:id')
+  findCommentsOfRestaurants(@Param('id') id: string) {
+    return this.restaurantsService.findCommentsOfRestaurants(id);
+  }
+
   @Auth(Role.USER)
   @Patch(':id')
   update(

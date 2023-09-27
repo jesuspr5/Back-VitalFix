@@ -104,17 +104,23 @@ export class RestaurantsService {
   }
 
   async findOne(id: string) {
-    const restaurant = await this.restaurantRepository.findOne({
-      where: {
-        id,
-      },
-      relations: ['images', 'comments', 'comments.user'],
-    });
+    const restaurant = await this.restaurantRepository.findOneBy({ id });
     if (!restaurant) {
       throw new BadRequestException('Restaurant not found');
     }
 
     return restaurant;
+  }
+
+  async findCommentsOfRestaurants(restaurantId: string) {
+    const comments = await this.restaurantRepository.findOne({
+      where: {
+        id: restaurantId,
+      },
+      relations: ['comments', 'comments.user'],
+      select: ['comments'],
+    });
+    return comments;
   }
 
   async update(id: string, updateRestaurantDto: UpdateRestaurantDto) {
