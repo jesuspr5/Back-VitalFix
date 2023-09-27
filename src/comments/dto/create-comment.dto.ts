@@ -1,4 +1,12 @@
-import { IsString, IsUUID, MinLength } from 'class-validator';
+import {
+  IsNumber,
+  IsPositive,
+  IsString,
+  IsUUID,
+  Max,
+  Min,
+  MinLength,
+} from 'class-validator';
 
 export class CreateCommentDto {
   @IsString()
@@ -14,4 +22,10 @@ export class CreateCommentDto {
   @MinLength(1)
   @IsUUID()
   restaurantId: string;
+
+  @IsNumber()
+  @IsPositive()
+  @Min(1)
+  @Max(5)
+  score: number;
 }

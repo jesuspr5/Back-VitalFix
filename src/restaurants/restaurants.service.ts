@@ -15,7 +15,6 @@ import { FirebaseService } from '../firebase/firebase.service';
 import { PatchType } from '../common/enums/patch.enum';
 import { UrlUpload } from '../firebase/interface/firebase.interface';
 import { UsersService } from '../users/users.service';
-import { Rating } from './entities/rating.entity,';
 import { AddRatingToRestaurant } from './dto/add-rating-restaurant.dto';
 import { FindRestaurantDto } from './dto/findRestaurants.dto';
 
@@ -26,8 +25,6 @@ export class RestaurantsService {
     private readonly restaurantRepository: Repository<Restaurant>,
     @InjectRepository(RestaurantImage)
     private readonly restaurantImageRepository: Repository<RestaurantImage>,
-    @InjectRepository(Rating)
-    private readonly ratingRepository: Repository<Rating>,
     private readonly firebaseService: FirebaseService,
     @Inject(forwardRef(() => UsersService))
     private readonly userService: UsersService,
@@ -127,7 +124,7 @@ export class RestaurantsService {
     return this.restaurantRepository.softRemove({ id });
   }
 
-  async addRatingToRestaurant(
+  /*   async addRatingToRestaurant(
     addRatingToRestaurant: AddRatingToRestaurant,
     userActive: UserActiveInterface,
   ): Promise<Rating> {
@@ -150,7 +147,7 @@ export class RestaurantsService {
 
     // Guarda la calificación en la base de datos
     return this.ratingRepository.save(rating);
-  }
+  } */
 
   async uploadImage(file: Express.Multer.File) {
     console.log(

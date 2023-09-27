@@ -25,7 +25,6 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { FilesInterceptor } from '@nestjs/platform-express';
-import { AddRatingToRestaurant } from './dto/add-rating-restaurant.dto';
 import { ActiveUser } from 'src/common/decorators/active-user.decorator';
 import { UserActiveInterface } from 'src/common/interfaces/user-active.interface';
 import { PaginationDto } from './dto/pagination.dto';
@@ -82,7 +81,7 @@ export class RestaurantsController {
       userActive,
     );
   }
-  @Auth(Role.USER)
+  /*   @Auth(Role.USER)
   @Post('/rating')
   addRatingToRestaurant(
     @Body() addRatingToRestaurant: AddRatingToRestaurant,
@@ -92,7 +91,7 @@ export class RestaurantsController {
       addRatingToRestaurant,
       userActive,
     );
-  }
+  } */
 
   @Auth(Role.USER)
   @ApiOperation({ summary: 'Get all restaurants' })

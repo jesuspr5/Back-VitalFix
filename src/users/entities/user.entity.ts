@@ -12,7 +12,6 @@ import {
 import { Role } from '../../common/enums/rol.enum';
 import { Comment } from '../../comments/entities/comment.entity';
 import { Restaurant } from '../../restaurants/entities/restaurant.entity';
-import { Rating } from '../../restaurants/entities/rating.entity,';
 
 @Entity()
 export class User {
@@ -59,10 +58,6 @@ export class User {
   // Relación uno a muchos con Restaurant
   @OneToMany(() => Restaurant, (restaurant) => restaurant.creator)
   restaurants: Restaurant[];
-
-  // Relación uno a muchos con Rating
-  @OneToMany(() => Rating, (rating) => rating.user)
-  ratings: Rating[];
 
   // Relación muchos a muchos con Restaurant para los restaurantes favoritos
   @ManyToMany(() => Restaurant, (restaurant) => restaurant.favoriteUsers)

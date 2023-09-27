@@ -18,6 +18,9 @@ export class Comment {
   @Column()
   text: string;
 
+  @Column()
+  score: number;
+
   @DeleteDateColumn({ select: false })
   deletedAt: Date;
 
