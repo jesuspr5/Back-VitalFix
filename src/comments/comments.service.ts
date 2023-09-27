@@ -40,10 +40,6 @@ export class CommentsService {
       user.id,
       restaurantId,
     );
-    console.log(
-      '🚀 ~ file: comments.service.ts:43 ~ CommentsService ~ commentUser:',
-      commentUser,
-    );
 
     if (commentUser.data !== null) {
       throw new UnauthorizedException('Commentary already exists for user');

@@ -82,7 +82,6 @@ export class RestaurantsController {
     );
   }
 
-  @Auth(Role.USER)
   @ApiOperation({ summary: 'Get all restaurants' })
   @ApiResponse({ status: 200, description: 'Success' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
