@@ -51,8 +51,7 @@ export class CommentsService {
       score,
     });
 
-    await this.comentRepository.save(comment);
-    return;
+    return await this.comentRepository.save(comment);
   }
 
   async findAll() {
