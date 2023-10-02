@@ -109,7 +109,7 @@ export class RestaurantsController {
     };
   }
 
-  @Auth(Role.USER)
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.restaurantsService.findOne(id);
