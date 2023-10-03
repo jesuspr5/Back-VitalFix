@@ -103,7 +103,7 @@ export class RestaurantsController {
     );
    
     
-  return {response}
+  return response
   }
 
 
