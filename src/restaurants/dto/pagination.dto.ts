@@ -22,4 +22,7 @@ export class PaginationDto {
   @Transform((obj) => Number(obj.value))
   perPages :number
   
+
+  
 }
+  
