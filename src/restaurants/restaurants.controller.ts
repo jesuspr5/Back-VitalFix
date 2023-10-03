@@ -12,6 +12,7 @@ import {
   UseInterceptors,
   UploadedFiles,
   Query,
+  Req 
 } from '@nestjs/common';
 import { RestaurantsService } from './restaurants.service';
 import { CreateRestaurantDto } from './dto/create-restaurant.dto';
@@ -31,6 +32,7 @@ import { PaginationDto } from './dto/pagination.dto';
 import { FindRestaurantDto } from './dto/findRestaurants.dto';
 import { Auth } from '../auth/decorators/auth.decorator';
 import { Role } from 'src/common/enums/rol.enum';
+import { Request } from 'express';
 
 @ApiBearerAuth()
 @ApiTags('Restaurants')
@@ -89,24 +91,19 @@ export class RestaurantsController {
   async findFilterAll(
     @Query() pagination: PaginationDto,
     @Query() query: FindRestaurantDto,
-  ): Promise<{
-    pagging: { quantity: number; limit: number; offset: number };
-    results: any[];
-    totalPages: number;
-  }> {
+    @Req() request: Request
+  ): Promise<any> {
+    const host = request.headers.host;
+    
     const response = await this.restaurantsService.findFilterAll(
       query,
-      pagination.limit,
-      pagination.offset,
+      pagination,
+      host
+      
     );
-    const totalPages = Math.ceil(
-      response.pagination.quantity / response.pagination.limit,
-    );
-    return {
-      pagging: response.pagination,
-      results: response.results,
-      totalPages: totalPages ? totalPages : response.pagination.quantity,
-    };
+   
+    
+  return {response,host}
   }
 
 

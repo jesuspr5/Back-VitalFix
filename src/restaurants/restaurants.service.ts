@@ -17,6 +17,7 @@ import { UrlUpload } from '../firebase/interface/firebase.interface';
 import { UsersService } from '../users/users.service';
 import { AddRatingToRestaurant } from './dto/add-rating-restaurant.dto';
 import { FindRestaurantDto } from './dto/findRestaurants.dto';
+import { PaginationDto } from './dto/pagination.dto';
 
 @Injectable()
 export class RestaurantsService {
@@ -69,32 +70,40 @@ export class RestaurantsService {
 
   async findFilterAll(
     query: FindRestaurantDto,
-    limit: number,
-    offset: number,
+    pagination: PaginationDto,
+    host : string
+   
   ): Promise<{
-    pagination: { quantity: number; limit: number; offset: number };
+    info: {  count: number; pages: number; next: string; prev :string; };
     results: Restaurant[];
   }> {
     try {
       const where = this.getFilterFromQuery(query);
       const order = this.getOrderFromQuery(query);
+      const  {pages,perPages} = pagination
 
-      const result = await this.restaurantRepository.findAndCount({
-        where: where,
-        order: order,
-        skip: offset,
-        take: limit,
-        relations: ['images'],
+      const skip = (pages - 1) * perPages;
+      const [results, count] = await this.restaurantRepository.findAndCount({
+        take: perPages,
+        skip,
+        where,
+        order
       });
-
+   
+      const totalPages = Math.ceil(count / perPages);
+      const nextPage = pages < totalPages ? `${host}/api/v1/restaurants?page=${pages + 1}&perPage=${perPages}` : null;
+      const prevPage = pages > 1 ? `${host}/api/v1/restaurants?page=${pages - 1}&perPage=${perPages}` : null;
+  
       return {
-        pagination: {
-          quantity: result[1],
-          limit,
-          offset,
+        info: {
+          count,
+          pages: totalPages,
+          next: nextPage,
+          prev: prevPage,
         },
-        results: result[0],
+        results,
       };
+     
     } catch (error) {
       console.log(
         '🚀 ~ file: restaurants.service.ts:108 ~ RestaurantsService ~ error:',
