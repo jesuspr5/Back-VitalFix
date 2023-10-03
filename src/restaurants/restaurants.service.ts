@@ -91,8 +91,8 @@ export class RestaurantsService {
       });
    
       const totalPages = Math.ceil(count / perPages);
-      const nextPage = page < totalPages ? `${host}/api/v1/restaurants?page=${page + 1}&perPage=${perPages}` : null;
-      const prevPage = page > 1 ? `${host}/api/v1/restaurants?page=${page - 1}&perPage=${perPages}` : null;
+      const nextPage = page < totalPages ? `https://${host}/api/v1/restaurants?page=${page + 1}&perPage=${perPages}` : null;
+      const prevPage = page > 1 ? `https://${host}/api/v1/restaurants?page=${page - 1}&perPage=${perPages}` : null;
   
       return {
         info: {
