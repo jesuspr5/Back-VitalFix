@@ -126,6 +126,8 @@ export class RestaurantsController {
     return this.restaurantsService.update(id, updateRestaurantDto);
   }
 
+
+  
   @Auth(Role.USER)
   @Delete(':id')
   remove(@Param('id') id: string) {
