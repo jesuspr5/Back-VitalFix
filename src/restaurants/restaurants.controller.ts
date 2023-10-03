@@ -94,7 +94,7 @@ export class RestaurantsController {
     @Req() request: Request
   ): Promise<any> {
     const host = request.headers.host;
-    
+
     const response = await this.restaurantsService.findFilterAll(
       query,
       pagination,
@@ -103,7 +103,7 @@ export class RestaurantsController {
     );
    
     
-  return {response,host}
+  return {response}
   }
 
 
