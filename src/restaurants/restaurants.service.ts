@@ -80,9 +80,9 @@ export class RestaurantsService {
     try {
       const where = this.getFilterFromQuery(query);
       const order = this.getOrderFromQuery(query);
-      const  {pages,perPages} = pagination
+      const  {page,perPages} = pagination
 
-      const skip = (pages - 1) * perPages;
+      const skip = (page - 1) * perPages;
       const [results, count] = await this.restaurantRepository.findAndCount({
         take: perPages,
         skip,
@@ -91,8 +91,8 @@ export class RestaurantsService {
       });
    
       const totalPages = Math.ceil(count / perPages);
-      const nextPage = pages < totalPages ? `${host}/api/v1/restaurants?page=${pages + 1}&perPage=${perPages}` : null;
-      const prevPage = pages > 1 ? `${host}/api/v1/restaurants?page=${pages - 1}&perPage=${perPages}` : null;
+      const nextPage = page < totalPages ? `${host}/api/v1/restaurants?page=${page + 1}&perPage=${perPages}` : null;
+      const prevPage = page > 1 ? `${host}/api/v1/restaurants?page=${page - 1}&perPage=${perPages}` : null;
   
       return {
         info: {
