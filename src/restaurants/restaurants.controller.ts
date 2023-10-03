@@ -39,7 +39,7 @@ import { Request } from 'express';
 @Controller('restaurants')
 export class RestaurantsController {
   constructor(private readonly restaurantsService: RestaurantsService) {}
-
+  @Auth(Role.USER)
   @Post()
   @UseInterceptors(FilesInterceptor('images'))
   @ApiConsumes('multipart/form-data')
