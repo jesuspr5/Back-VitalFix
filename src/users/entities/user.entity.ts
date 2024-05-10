@@ -18,10 +18,10 @@ export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: false })
   name: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: false })
   lastname: string;
 
   @Column({ unique: true, nullable: false })

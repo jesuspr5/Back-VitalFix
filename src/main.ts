@@ -17,8 +17,8 @@ async function bootstrap() {
   );
 
   const config = new DocumentBuilder()
-    .setTitle('Restaurant social')
-    .setDescription('The restaurant social API description')
+    .setTitle('VitalFix ')
+    .setDescription('vitalfix Equipos Medicos')
     .setVersion('1.0')
     .addBearerAuth()
     .build();

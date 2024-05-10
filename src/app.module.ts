@@ -7,6 +7,7 @@ import { RestaurantsModule } from './restaurants/restaurants.module';
 import { CommentsModule } from './comments/comments.module';
 import { FirebaseModule } from './firebase/firebase.module';
 import { EnvCofiguration } from './config/env.config';
+import { PromotionsModule } from './promotions/promotions.module';
 
 @Module({
   imports: [
@@ -28,8 +29,8 @@ import { EnvCofiguration } from './config/env.config';
         ssl:
           process.env.POSTGRES_SSL === 'true'
             ? {
-                rejectUnauthorized: false,
-              }
+              rejectUnauthorized: false,
+            }
             : null,
       },
     }),
@@ -38,8 +39,9 @@ import { EnvCofiguration } from './config/env.config';
     RestaurantsModule,
     CommentsModule,
     FirebaseModule,
+    PromotionsModule,
   ],
   controllers: [],
   providers: [],
 })
-export class AppModule {}
+export class AppModule { }
