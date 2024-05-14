@@ -8,6 +8,7 @@ import { CommentsModule } from './comments/comments.module';
 import { FirebaseModule } from './firebase/firebase.module';
 import { EnvCofiguration } from './config/env.config';
 import { PromotionsModule } from './promotions/promotions.module';
+import { InventoryModule } from './inventory/inventory.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { PromotionsModule } from './promotions/promotions.module';
     CommentsModule,
     FirebaseModule,
     PromotionsModule,
+    InventoryModule,
   ],
   controllers: [],
   providers: [],
