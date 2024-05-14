@@ -31,54 +31,54 @@ import { SearchGoogleMap } from './dto/api-google-map.dto';
 @ApiTags('Users')
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly usersService: UsersService) { }
   @Auth(Role.ADMIN)
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
   }
-  @Auth(Role.USER)
-  @Post('favorites/add')
-  async addFavoriteRestaurant(
-    @Body() addFavoriteDto: AddFavoriteDto,
-    @ActiveUser() userActive: UserActiveInterface,
-  ) {
-    const user = await this.usersService.addFavoriteRestaurant(
-      addFavoriteDto,
-      userActive,
-    );
-    return user;
-  }
+  // @Auth(Role.USER)
+  // @Post('favorites/add')
+  // async addFavoriteRestaurant(
+  //   @Body() addFavoriteDto: AddFavoriteDto,
+  //   @ActiveUser() userActive: UserActiveInterface,
+  // ) {
+  //   const user = await this.usersService.addFavoriteRestaurant(
+  //     addFavoriteDto,
+  //     userActive,
+  //   );
+  //   return user;
+  // }
 
-  @Auth(Role.USER)
-  @Get('favorites/:id')
-  async findFavoriteRestaurantByIdAndUser(
-    @Param('id') restaurantId: string,
-    @ActiveUser() userActive: UserActiveInterface,
-  ) {
-    return await this.usersService.findFavoriteRestaurantByIdAndUser(
-      restaurantId,
-      userActive,
-    );
-  }
-  @Auth(Role.USER)
-  @Get('favorites')
-  async findAllFavoritesByUser(@ActiveUser() userActive: UserActiveInterface) {
-    return await this.usersService.findAllFavoritesByUser(userActive);
-  }
+  // @Auth(Role.USER)
+  // @Get('favorites/:id')
+  // async findFavoriteRestaurantByIdAndUser(
+  //   @Param('id') restaurantId: string,
+  //   @ActiveUser() userActive: UserActiveInterface,
+  // ) {
+  //   return await this.usersService.findFavoriteRestaurantByIdAndUser(
+  //     restaurantId,
+  //     userActive,
+  //   );
+  // }
+  // @Auth(Role.USER)
+  // @Get('favorites')
+  // async findAllFavoritesByUser(@ActiveUser() userActive: UserActiveInterface) {
+  //   return await this.usersService.findAllFavoritesByUser(userActive);
+  // }
 
-  @Auth(Role.USER)
-  @Delete('favorites/remove/:id')
-  async removeFavoriteRestaurant(
-    @Param('id') restaurantId: string,
-    @ActiveUser() userActive: UserActiveInterface,
-  ) {
-    const user = await this.usersService.removeFavoriteRestaurant(
-      restaurantId,
-      userActive,
-    );
-    return user;
-  }
+  // @Auth(Role.USER)
+  // @Delete('favorites/remove/:id')
+  // async removeFavoriteRestaurant(
+  //   @Param('id') restaurantId: string,
+  //   @ActiveUser() userActive: UserActiveInterface,
+  // ) {
+  //   const user = await this.usersService.removeFavoriteRestaurant(
+  //     restaurantId,
+  //     userActive,
+  //   );
+  //   return user;
+  // }
   @Auth(Role.USER)
   @Patch('uploadImage/:id')
   @ApiConsumes('multipart/form-data')
@@ -108,23 +108,25 @@ export class UsersController {
   ) {
     return this.usersService.uploadImageProfile(id, image);
   }
+
   @Auth(Role.USER)
   @Get()
   findAll() {
     return this.usersService.findAll();
   }
 
-  @Auth(Role.USER)
-  @Get('searchAddress/:id/:lat/:lng')
-  searchAddressGoogleMapByLatLng(@Param() searchGoogleMap: SearchGoogleMap) {
-    return this.usersService.searchAddressGoogleMapByLatLng(searchGoogleMap);
-  }
+  // @Auth(Role.USER)
+  // @Get('searchAddress/:id/:lat/:lng')
+  // searchAddressGoogleMapByLatLng(@Param() searchGoogleMap: SearchGoogleMap) {
+  //   return this.usersService.searchAddressGoogleMapByLatLng(searchGoogleMap);
+  // }
 
-  @Auth(Role.ADMIN)
+  @Auth(Role.USER)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(id);
   }
+
   @Auth(Role.ADMIN)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {

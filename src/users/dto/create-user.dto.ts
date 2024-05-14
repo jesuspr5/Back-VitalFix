@@ -8,13 +8,13 @@ import {
 } from 'class-validator';
 
 export class CreateUserDto {
-  @IsOptional()
+
   @Transform(({ value }) => value.trim())
   @IsString()
   @MinLength(1)
   name?: string;
 
-  @IsOptional()
+
   @Transform(({ value }) => value.trim())
   @IsString()
   @MinLength(1)

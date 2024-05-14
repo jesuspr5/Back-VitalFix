@@ -4,15 +4,13 @@ import { User } from './entities/user.entity';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 import { AuthModule } from '../auth/auth.module';
-import { RestaurantsModule } from '../restaurants/restaurants.module';
 import { FirebaseModule } from '../firebase/firebase.module';
-import { RestaurantsService } from '../restaurants/restaurants.service';
 import { ConfigModule } from '@nestjs/config';
 @Module({
   imports: [
     ConfigModule,
     FirebaseModule,
-    forwardRef(() => RestaurantsModule),
+    // forwardRef(() => RestaurantsModule),
     TypeOrmModule.forFeature([User]),
     forwardRef(() => AuthModule),
   ],
@@ -20,4 +18,4 @@ import { ConfigModule } from '@nestjs/config';
   providers: [UsersService],
   exports: [UsersService],
 })
-export class UsersModule {}
+export class UsersModule { }

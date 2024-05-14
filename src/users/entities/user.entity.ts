@@ -10,8 +10,8 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Role } from '../../common/enums/rol.enum';
-import { Comment } from '../../comments/entities/comment.entity';
-import { Restaurant } from '../../restaurants/entities/restaurant.entity';
+// import { Comment } from '../../comments/entities/comment.entity';
+// import { Restaurant } from '../../restaurants/entities/restaurant.entity';
 
 @Entity()
 export class User {
@@ -52,15 +52,15 @@ export class User {
   @Column({ nullable: true })
   urlAvatar: string;
   // Relación uno a muchos con Comentary
-  @OneToMany(() => Comment, (comment) => comment.user)
-  comments: Comment[];
+  // @OneToMany(() => Comment, (comment) => comment.user)
+  // comments: Comment[];
 
-  // Relación uno a muchos con Restaurant
-  @OneToMany(() => Restaurant, (restaurant) => restaurant.creator)
-  restaurants: Restaurant[];
+  // // Relación uno a muchos con Restaurant
+  // @OneToMany(() => Restaurant, (restaurant) => restaurant.creator)
+  // restaurants: Restaurant[];
 
-  // Relación muchos a muchos con Restaurant para los restaurantes favoritos
-  @ManyToMany(() => Restaurant, (restaurant) => restaurant.favoriteUsers)
-  @JoinTable()
-  favoriteRestaurants: Restaurant[];
+  // // Relación muchos a muchos con Restaurant para los restaurantes favoritos
+  // @ManyToMany(() => Restaurant, (restaurant) => restaurant.favoriteUsers)
+  // @JoinTable()
+  // favoriteRestaurants: Restaurant[];
 }

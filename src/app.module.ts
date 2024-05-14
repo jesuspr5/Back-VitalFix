@@ -3,8 +3,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
-import { RestaurantsModule } from './restaurants/restaurants.module';
-import { CommentsModule } from './comments/comments.module';
 import { FirebaseModule } from './firebase/firebase.module';
 import { EnvCofiguration } from './config/env.config';
 import { PromotionsModule } from './promotions/promotions.module';
@@ -37,8 +35,6 @@ import { InventoryModule } from './inventory/inventory.module';
     }),
     UsersModule,
     AuthModule,
-    RestaurantsModule,
-    CommentsModule,
     FirebaseModule,
     PromotionsModule,
     InventoryModule,
