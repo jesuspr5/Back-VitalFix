@@ -27,7 +27,7 @@ import { UpdatePasswordDto } from './dto/update-password.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 import { SearchGoogleMap } from './dto/api-google-map.dto';
 
-@ApiBearerAuth()
+
 @ApiTags('Users')
 @Controller('users')
 export class UsersController {
@@ -79,7 +79,7 @@ export class UsersController {
   //   );
   //   return user;
   // }
-  @Auth(Role.USER)
+
   @Patch('uploadImage/:id')
   @ApiConsumes('multipart/form-data')
   @ApiBody({
@@ -109,7 +109,7 @@ export class UsersController {
     return this.usersService.uploadImageProfile(id, image);
   }
 
-  @Auth(Role.USER)
+
   @Get()
   findAll() {
     return this.usersService.findAll();
@@ -121,19 +121,19 @@ export class UsersController {
   //   return this.usersService.searchAddressGoogleMapByLatLng(searchGoogleMap);
   // }
 
-  @Auth(Role.USER)
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(id);
   }
 
-  @Auth(Role.ADMIN)
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(id, updateUserDto);
   }
 
-  @Auth(Role.USER)
+
   @Patch('updateProfile/:id')
   updateProfile(
     @Param('id') id: string,
@@ -142,7 +142,7 @@ export class UsersController {
     return this.usersService.updateProfile(id, updateProfileDto);
   }
 
-  @Auth(Role.USER)
+
   @Patch('updateEmail/:id')
   updatePasswordEmail(
     @Param('id') id: string,
@@ -151,7 +151,7 @@ export class UsersController {
     return this.usersService.updatePasswordEmail(id, updateEmailDto);
   }
 
-  @Auth(Role.USER)
+
   @Patch('updatePassword/:id')
   updatePassword(
     @Param('id') id: string,
@@ -160,7 +160,7 @@ export class UsersController {
     return this.usersService.updatePassword(id, updatePasswordDto);
   }
 
-  @Auth(Role.ADMIN)
+
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.usersService.remove(+id);

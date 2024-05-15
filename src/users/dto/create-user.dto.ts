@@ -6,8 +6,13 @@ import {
   IsUrl,
   MinLength,
 } from 'class-validator';
-
+import { Role } from '../../common/enums/rol.enum';
 export class CreateUserDto {
+
+  @IsOptional()
+  @IsString()
+  role: Role
+
 
   @Transform(({ value }) => value.trim())
   @IsString()

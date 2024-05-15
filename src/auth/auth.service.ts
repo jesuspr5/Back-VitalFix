@@ -19,9 +19,9 @@ export class AuthService {
     private readonly usersService: UsersService,
     @Inject(forwardRef(() => JwtService))
     private readonly jwtService: JwtService,
-  ) {}
+  ) { }
 
-  async register({ name, email, password, lastname }: RegisterDto) {
+  async register({ role, name, email, password, lastname }: RegisterDto) {
     const user = await this.usersService.findOneByEmail(email);
 
     if (user) {
@@ -29,6 +29,7 @@ export class AuthService {
     }
 
     await this.usersService.create({
+      role,
       name,
       lastname,
       email,
@@ -64,9 +65,8 @@ export class AuthService {
       name: user.name,
       lastname: user.lastname,
       urlAvatar: user.urlAvatar ? user.urlAvatar : '',
-      displayName: `${user.name ? user.name : ''} ${
-        user.lastname ? user.lastname : ''
-      }`,
+      displayName: `${user.name ? user.name : ''} ${user.lastname ? user.lastname : ''
+        }`,
     };
   }
 

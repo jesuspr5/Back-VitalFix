@@ -5,7 +5,9 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
+  app.enableCors({
+    origin: '*'
+  });
   app.setGlobalPrefix('api/v1');
 
   app.useGlobalPipes(
@@ -29,3 +31,4 @@ async function bootstrap() {
   await app.listen(parseInt(process.env.PORT) || 3001);
 }
 bootstrap();
+
