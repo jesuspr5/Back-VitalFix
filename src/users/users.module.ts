@@ -6,6 +6,7 @@ import { UsersService } from './users.service';
 import { AuthModule } from '../auth/auth.module';
 import { FirebaseModule } from '../firebase/firebase.module';
 import { ConfigModule } from '@nestjs/config';
+import { FirebaseService } from 'src/firebase/firebase.service';
 @Module({
   imports: [
     ConfigModule,
@@ -15,7 +16,7 @@ import { ConfigModule } from '@nestjs/config';
     forwardRef(() => AuthModule),
   ],
   controllers: [UsersController],
-  providers: [UsersService],
+  providers: [UsersService, FirebaseService],
   exports: [UsersService],
 })
 export class UsersModule { }

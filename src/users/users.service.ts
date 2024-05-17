@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ConsoleLogger,
   Inject,
   Injectable,
   NotFoundException,
@@ -14,8 +15,6 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { FirebaseService } from '../firebase/firebase.service';
 import { PatchType } from '../common/enums/patch.enum';
-import { AddFavoriteDto } from './dto/add-favorite.dto';
-import { UserActiveInterface } from 'src/common/interfaces/user-active.interface';
 import { UpdateEmailDto } from './dto/update-email.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
@@ -169,10 +168,14 @@ export class UsersService {
 
   async uploadImageProfile(id: string, image: Express.Multer.File) {
     const user = await this.findOne(id);
+    console.log("🚀 ~ UsersService ~ uploadImageProfile ~ user:", user)
+
     if (!user) {
+      console.log("no hay id ")
       throw new UnauthorizedException('id is wrong');
     }
     if (user.urlAvatar) {
+      console.log("hay id ")
       await this.firebaseService.deleteImage(user.urlAvatar);
     }
 

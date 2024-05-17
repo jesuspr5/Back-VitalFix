@@ -35,6 +35,6 @@ export class CreateUserDto {
 
   @IsOptional()
   @IsString()
-  @IsUrl()
+
   urlAvatar?: string;
 }

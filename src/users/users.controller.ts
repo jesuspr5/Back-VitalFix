@@ -28,11 +28,12 @@ import { UpdateProfileDto } from './dto/update-profile.dto';
 import { SearchGoogleMap } from './dto/api-google-map.dto';
 
 
+@ApiBearerAuth()
 @ApiTags('Users')
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) { }
-  @Auth(Role.ADMIN)
+
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
@@ -109,7 +110,7 @@ export class UsersController {
     return this.usersService.uploadImageProfile(id, image);
   }
 
-
+  @Auth(Role.ADMIN)
   @Get()
   findAll() {
     return this.usersService.findAll();
@@ -121,7 +122,7 @@ export class UsersController {
   //   return this.usersService.searchAddressGoogleMapByLatLng(searchGoogleMap);
   // }
 
-
+  @Auth(Role.ADMIN)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(id);
@@ -160,7 +161,7 @@ export class UsersController {
     return this.usersService.updatePassword(id, updatePasswordDto);
   }
 
-
+  @Auth(Role.ADMIN)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.usersService.remove(+id);

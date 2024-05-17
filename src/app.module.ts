@@ -7,6 +7,7 @@ import { FirebaseModule } from './firebase/firebase.module';
 import { EnvCofiguration } from './config/env.config';
 import { PromotionsModule } from './promotions/promotions.module';
 import { InventoryModule } from './inventory/inventory.module';
+import { ServicesModule } from './services/services.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { InventoryModule } from './inventory/inventory.module';
     FirebaseModule,
     PromotionsModule,
     InventoryModule,
+    ServicesModule,
   ],
   controllers: [],
   providers: [],
