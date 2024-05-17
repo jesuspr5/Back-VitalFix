@@ -26,9 +26,29 @@ export class ServicesService {
     private readonly configService: ConfigService,
   ) { }
 
-  create(createServiceDto: CreateServiceDto) {
-    return this.serviceRepository.save(createServiceDto);
+  //  create(createServiceDto: CreateServiceDto) {
+
+  //   return this.serviceRepository.save(createServiceDto);
+  // }
+
+  async create(createServiceDto: CreateServiceDto, image: Express.Multer.File) {
+    // Si el DTO ya tiene una URL de avatar, elimina la imagen existente
+    if (createServiceDto.urlAvatar) {
+      await this.firebaseService.deleteImage(createServiceDto.urlAvatar);
+    }
+
+    // Sube la nueva imagen y obtiene la URL
+    const url = await this.firebaseService.uploadImage(image, PatchType.SERVICES);
+
+    // Actualiza el DTO con la nueva URL del avatar
+    createServiceDto.urlAvatar = url;
+
+    // Guarda el servicio en el repositorio
+    const createdService = await this.serviceRepository.save(createServiceDto);
+
+    return { urlAvatar: url, service: createdService };
   }
+
 
   async findAll() {
     return await this.serviceRepository.find();

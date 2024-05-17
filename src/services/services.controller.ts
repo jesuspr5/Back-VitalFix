@@ -29,10 +29,36 @@ import { auth } from 'firebase-admin';
 export class ServicesController {
   constructor(private readonly servicesService: ServicesService) { }
 
-  @Post()
-  create(@Body() createServiceDto: CreateServiceDto) {
-    return this.servicesService.create(createServiceDto);
+  // @Post()
+  // create(@Body() createServiceDto: CreateServiceDto) {
+  //   return this.servicesService.create(createServiceDto);
 
+  // }
+
+  @Post()
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        image: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
+
+  @UseInterceptors(FileInterceptor('image')) // 'image' es el nombre del campo del archivo en el formulario
+  async create(@Body() createServiceDto: CreateServiceDto,
+
+    @UploadedFile(new ParseFilePipe({
+      validators: [
+        new MaxFileSizeValidator({ maxSize: 5242880 }),
+        new FileTypeValidator({ fileType: /(jpg|jpeg|png)$/ }),
+      ],
+    }),) image: Express.Multer.File) {
+    return this.servicesService.create(createServiceDto, image);
   }
 
   @Get()

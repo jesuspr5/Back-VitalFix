@@ -8,6 +8,7 @@ import { EnvCofiguration } from './config/env.config';
 import { PromotionsModule } from './promotions/promotions.module';
 import { InventoryModule } from './inventory/inventory.module';
 import { ServicesModule } from './services/services.module';
+import { RequestsModule } from './requests/requests.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { ServicesModule } from './services/services.module';
     PromotionsModule,
     InventoryModule,
     ServicesModule,
+    RequestsModule,
   ],
   controllers: [],
   providers: [],
