@@ -17,7 +17,7 @@ export class CreateServiceDto {
     @Transform(({ value }) => value.trim())
     @IsString()
     @MinLength(1)
-    tipo?: string;
+    type?: string;
 
 
     @Transform(({ value }) => value.trim())

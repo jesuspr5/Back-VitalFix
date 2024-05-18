@@ -18,7 +18,7 @@ export class Service {
     name: string;
 
     @Column()
-    tipo: string;
+    type: string;
 
     @Column()
     price: number;
