@@ -85,7 +85,7 @@ export class RequestsService {
   }
 
 
-  remove(id: number) {
-    return `This action removes a #${id} request`;
+  remove(id: string) {
+    return this.requestRepository.softDelete({ id });
   }
 }

@@ -54,7 +54,7 @@ export class PromotionsService {
   }
 
   async remove(id: string) {
-    await this.findOne;
+
     return this.promotionRepository.softDelete({ id });
   }
 }

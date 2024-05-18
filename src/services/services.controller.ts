@@ -29,36 +29,10 @@ import { auth } from 'firebase-admin';
 export class ServicesController {
   constructor(private readonly servicesService: ServicesService) { }
 
-  // @Post()
-  // create(@Body() createServiceDto: CreateServiceDto) {
-  //   return this.servicesService.create(createServiceDto);
-
-  // }
-
   @Post()
-  @ApiConsumes('multipart/form-data')
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        image: {
-          type: 'string',
-          format: 'binary',
-        },
-      },
-    },
-  })
+  create(@Body() createServiceDto: CreateServiceDto) {
+    return this.servicesService.create(createServiceDto);
 
-  @UseInterceptors(FileInterceptor('image')) // 'image' es el nombre del campo del archivo en el formulario
-  async create(@Body() createServiceDto: CreateServiceDto,
-
-    @UploadedFile(new ParseFilePipe({
-      validators: [
-        new MaxFileSizeValidator({ maxSize: 5242880 }),
-        new FileTypeValidator({ fileType: /(jpg|jpeg|png)$/ }),
-      ],
-    }),) image: Express.Multer.File) {
-    return this.servicesService.create(createServiceDto, image);
   }
 
   @Get()
@@ -71,36 +45,6 @@ export class ServicesController {
     return this.servicesService.findOne(id);
   }
 
-  @Patch('uploadImage/:id')
-  @ApiConsumes('multipart/form-data')
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        image: {
-          type: 'string',
-          format: 'binary',
-        },
-      },
-    },
-  })
-  @UseInterceptors(FileInterceptor('image'))
-  uploadImage(
-    @UploadedFile(
-      new ParseFilePipe({
-        validators: [
-          new MaxFileSizeValidator({ maxSize: 5242880 }),
-          new FileTypeValidator({ fileType: /(jpg|jpeg|png)$/ }),
-        ],
-      }),
-    )
-    image: Express.Multer.File,
-    @Param('id') id: string,
-  ) {
-    return this.servicesService.uploadImageService(id, image);
-  }
-
-
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateServiceDto: UpdateServiceDto) {
     return this.servicesService.update(id, updateServiceDto);
@@ -108,6 +52,6 @@ export class ServicesController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.servicesService.remove(+id);
+    return this.servicesService.remove(id);
   }
 }

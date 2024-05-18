@@ -55,7 +55,6 @@ export class InventoryService {
   }
 
   async remove(id: string) {
-    await this.findOne;
     return this.inventoryRepository.softDelete({ id });
   }
 }

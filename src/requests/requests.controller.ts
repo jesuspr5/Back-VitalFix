@@ -107,6 +107,6 @@ export class RequestsController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.RequestsService.remove(+id);
+    return this.RequestsService.remove(id);
   }
 }

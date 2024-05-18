@@ -14,54 +14,17 @@ export class Service {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-
-    @Column()
-    details: string;
-
-
-    @Column()
-    maker: string;
-
-
-    @Column()
-    model: string;
-
-
-    @Column()
-    serial: string;
-
-
-    @Column({ nullable: true })
-    description?: string;
-
-    @Column({ nullable: true })
-    urlAvatar: string;
-
-
-
     @Column()
     name: string;
 
+    @Column()
+    tipo: string;
 
     @Column()
-    lastname: string;
-
-
-    @Column()
-    email: string;
-
+    price: number;
 
     @Column()
-    phone: string;
-
-
-    @Column()
-    address: string;
-
-
-    @Column()
-    reference: string;
-
+    description: string;
 
     @Column()
     status: string;
