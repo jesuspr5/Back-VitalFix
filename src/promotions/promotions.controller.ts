@@ -7,6 +7,9 @@ import { Auth } from 'src/auth/decorators/auth.decorator';
 import { ActiveUser } from 'src/common/decorators/active-user.decorator';
 import { UserActiveInterface } from 'src/common/interfaces/user-active.interface';
 import { Role } from 'src/common/enums/rol.enum';
+
+
+
 @ApiBearerAuth()
 @ApiTags('promotions')
 @Auth(Role.USER)
@@ -37,6 +40,7 @@ export class PromotionsController {
   update(@Param('id') id: string, @Body() updatePromotionDto: UpdatePromotionDto) {
     return this.promotionsService.update(id, updatePromotionDto);
   }
+
 
   @Delete(':id')
   remove(@Param('id') id: string) {

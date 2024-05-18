@@ -48,7 +48,7 @@ export class InventoryService {
   }
 
   async update(id: string, updateInventoryDto: UpdateInventoryDto) {
-    await this.findOne(id);
+
     return await this.inventoryRepository.update(id, {
       ...updateInventoryDto,
     });

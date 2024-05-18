@@ -19,7 +19,7 @@ import { UpdateEmailDto } from './dto/update-email.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 import { ConfigService } from '@nestjs/config';
-import { SearchGoogleMap } from './dto/api-google-map.dto';
+
 
 
 @Injectable()

@@ -25,18 +25,21 @@ import { UserActiveInterface } from '../common/interfaces/user-active.interface'
 import { UpdateEmailDto } from './dto/update-email.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
-import { SearchGoogleMap } from './dto/api-google-map.dto';
+import { AuthService } from 'src/auth/auth.service';
 
 
 @ApiBearerAuth()
 @ApiTags('Users')
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) { }
+  constructor(private readonly usersService: UsersService,
+    private readonly AuthService: AuthService
+
+  ) { }
 
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+    return this.AuthService.register(createUserDto);
   }
   // @Auth(Role.USER)
   // @Post('favorites/add')

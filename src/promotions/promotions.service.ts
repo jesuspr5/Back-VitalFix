@@ -47,7 +47,10 @@ export class PromotionsService {
   }
 
   async update(id: string, updatePromotionDto: UpdatePromotionDto) {
-    await this.findOne(id);
+    const service = await this.findOne(id);
+    if (!service) {
+      throw new UnauthorizedException('id is wrong');
+    }
     return await this.promotionRepository.update(id, {
       ...updatePromotionDto,
     });

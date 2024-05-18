@@ -16,15 +16,18 @@ export class Promotion {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    @Index()
     @Column()
     titulo: string;
 
+    @Column()
+    type: string;
 
-
-    @Index()
     @Column({ nullable: true })
     description?: string;
+
+
+    @Column()
+    status?: string;
 
     @DeleteDateColumn({ select: false })
     deletedAt: Date;
