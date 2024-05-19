@@ -9,6 +9,7 @@ import { PromotionsModule } from './promotions/promotions.module';
 import { InventoryModule } from './inventory/inventory.module';
 import { ServicesModule } from './services/services.module';
 import { RequestsModule } from './requests/requests.module';
+import { ReviewsModule } from './reviews/reviews.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { RequestsModule } from './requests/requests.module';
     InventoryModule,
     ServicesModule,
     RequestsModule,
+    ReviewsModule,
   ],
   controllers: [],
   providers: [],
