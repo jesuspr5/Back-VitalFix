@@ -28,37 +28,49 @@ import { auth } from 'firebase-admin';
 export class RequestsController {
   constructor(private readonly RequestsService: RequestsService) { }
 
-
-  // @Post()
-  // @ApiConsumes('multipart/form-data')
-  // @ApiBody({
-  //   schema: {
-  //     type: 'object',
-  //     properties: {
-  //       image: {
-  //         type: 'string',
-  //         format: 'binary',
-  //       },
-  //     },
-  //   },
-  // })
-
-  // @UseInterceptors(FileInterceptor('image')) // 'image' es el nombre del campo del archivo en el formulario
-  // async create(@Body() createRequestDto: CreateRequestDto,
-
-  //   @UploadedFile(new ParseFilePipe({
-  //     validators: [
-  //       new MaxFileSizeValidator({ maxSize: 5242880 }),
-  //       new FileTypeValidator({ fileType: /(jpg|jpeg|png)$/ }),
-  //     ],
-  //   }),) image: Express.Multer.File) {
-  //   return this.RequestsService.create(createRequestDto, image);
-  // }
-
   @Post()
-  create(@Body() createRequestDto: CreateRequestDto) {
-    return this.RequestsService.create(createRequestDto);
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    description: 'cargar datos',
+    schema: {
+      type: 'object',
+      properties: {
+        details: { type: 'string' },
+        maker: { type: 'string' },
+        model: { type: 'string' },
+        serial: { type: 'string' },
+        description: { type: 'string', nullable: true },
+        name: { type: 'string' },
+        lastname: { type: 'string' },
+        email: { type: 'string' },
+        phone: { type: 'string' },
+        address: { type: 'string' },
+        reference: { type: 'string' },
+        status: { type: 'string' },
+        image: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
+  @UseInterceptors(FileInterceptor('image'))
+  create(@Body() createRequestDto: CreateRequestDto,
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({ maxSize: 5242880 }),
+          new FileTypeValidator({ fileType: /(jpg|jpeg|png)$/ }),
+        ],
+      }),
+    )
+    image: Express.Multer.File,
+
+  ) {
+    console.log("🚀 ~ RequestsController ~ createRequestDto:", createRequestDto)
+    return this.RequestsService.create(createRequestDto, image);
   }
+
 
   @Get()
   findAll() {

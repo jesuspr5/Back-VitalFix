@@ -37,7 +37,6 @@ export class CreateRequestDto {
 
     @IsOptional()
     @IsString()
-
     urlAvatar?: string;
 
     @Transform(({ value }) => value.trim())

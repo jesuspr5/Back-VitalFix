@@ -44,7 +44,15 @@ export class RequestsService {
   //   return { urlAvatar: url, service: createdRequest };
   // }
 
-  async create(createRequestDto: CreateRequestDto) {
+  async create(createRequestDto: CreateRequestDto, image: Express.Multer.File) {
+    console.log("🚀 ~ RequestsService ~ create ~ image:", image)
+    console.log("🚀 ~ RequestsService ~ create ~ createRequestDto:", createRequestDto)
+    const url = await this.firebaseService.uploadImage(
+      image,
+      PatchType.SERVICES,
+    );
+    createRequestDto.urlAvatar = url;
+
 
     return await this.requestRepository.save(createRequestDto);
   }
