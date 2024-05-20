@@ -5,6 +5,8 @@ import {
     IsString,
     IsUrl,
     MinLength,
+    IsNumber
+
 } from 'class-validator';
 export class CreateServiceDto {
 
@@ -20,9 +22,7 @@ export class CreateServiceDto {
     type?: string;
 
 
-    @Transform(({ value }) => value.trim())
-    @IsString()
-    @MinLength(1)
+    @IsNumber()
     price?: number;
 
     @Transform(({ value }) => value.trim())
