@@ -2,25 +2,19 @@ import {
   Body,
   Controller,
   Delete,
-  FileTypeValidator,
   Get,
-  MaxFileSizeValidator,
   Param,
-  ParseFilePipe,
   Patch,
   Post,
-  UploadedFile,
-  UseInterceptors,
+  Put,
 } from '@nestjs/common';
 import { ServicesService } from './services.service';
 import { CreateServiceDto } from './dto/create-service.dto';
 import { UpdateServiceDto } from './dto/update-service.dto';
-import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { Auth } from '../auth/decorators/auth.decorator';
-import { ActiveUser } from '../common/decorators/active-user.decorator';
-import { UserActiveInterface } from '../common/interfaces/user-active.interface';
-import { auth } from 'firebase-admin';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+
+
+
 
 
 @ApiBearerAuth()
@@ -46,7 +40,7 @@ export class ServicesController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateServiceDto: UpdateServiceDto) {
+  async update(@Param('id') id: string, @Body() updateServiceDto: UpdateServiceDto) {
     return this.servicesService.update(id, updateServiceDto);
   }
 

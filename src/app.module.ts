@@ -10,6 +10,8 @@ import { InventoryModule } from './inventory/inventory.module';
 import { ServicesModule } from './services/services.module';
 import { RequestsModule } from './requests/requests.module';
 import { ReviewsModule } from './reviews/reviews.module';
+import { TypeserviceModule } from './typeservice/typeservice.module';
+
 
 @Module({
   imports: [
@@ -44,6 +46,7 @@ import { ReviewsModule } from './reviews/reviews.module';
     ServicesModule,
     RequestsModule,
     ReviewsModule,
+    TypeserviceModule,
   ],
   controllers: [],
   providers: [],

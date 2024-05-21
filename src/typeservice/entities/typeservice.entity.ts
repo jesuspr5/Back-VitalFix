@@ -6,14 +6,14 @@ import {
     UpdateDateColumn,
     CreateDateColumn,
     Index,
-    ManyToOne,
-    JoinColumn
+    OneToMany
 } from 'typeorm';
-import { Typeservice } from 'src/typeservice/entities/typeservice.entity';
 
+
+import { Service } from 'src/services/entities/service.entity';
 
 @Entity()
-export class Service {
+export class Typeservice {
     @Index()
     @PrimaryGeneratedColumn('uuid')
     id: string;
@@ -21,15 +21,6 @@ export class Service {
     @Column()
     name: string;
 
-
-    @Column()
-    price: number;
-
-    @Column()
-    description: string;
-
-    @Column()
-    status: string;
 
     @DeleteDateColumn({ select: false })
     deletedAt: Date;
@@ -48,9 +39,7 @@ export class Service {
     updatedAt: Date;
 
 
-    @ManyToOne(() => Typeservice, { eager: true }) // eager para cargar automáticamente el tipo
-    @JoinColumn() // esto asegura que 'type' se refiera a 'name' de Typeservice
-    type: Typeservice;
+    @OneToMany(() => Service, (service) => service.type)
+    services: Service[];
 
 }
-
