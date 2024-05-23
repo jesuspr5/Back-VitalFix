@@ -27,34 +27,34 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
-    // @Inject(forwardRef(() => RestaurantsService))
-    // private readonly restaurantsService: RestaurantsService,
     private readonly firebaseService: FirebaseService,
     private readonly configService: ConfigService,
   ) { }
 
-  create(createUserDto: CreateUserDto) {
-    return this.userRepository.save(createUserDto);
+  async create(createUserDto: CreateUserDto,) {
+    console.log("🚀 ~ UsersService ~ create ~ createUserDto:", createUserDto)
+
+    const { email, ...serviceData } = createUserDto;
+    console.log("🚀 ~ UsersService ~ create ~ email:", email)
+    if (!email) {
+      throw new BadRequestException('debe ingresar un email');
+    }
+    const user = await this.findOneByEmail(email);
+    if (user) {
+      throw new BadRequestException('el usuario  ya existe');
+    }
+    const usuario = this.userRepository.create({
+      ...serviceData,
+      email,
+      password: await bcryptjs.hash(serviceData.password, 10),
+    });
+    return this.userRepository.save(usuario);
   }
 
   findOneByEmail(email: string) {
     return this.userRepository.findOneBy({ email });
   }
 
-  // async searchAddressGoogleMapByLatLng(searchGoogleMap: SearchGoogleMap) {
-  //   const apiKey = this.configService.get<string>('keyGoogleMaps');
-  //   const latlng = `${searchGoogleMap.lat},${searchGoogleMap.lng}`;
-  //   const user = await this.findById(searchGoogleMap.id);
-  //   if (!user) {
-  //     throw new UnauthorizedException('id is wrong');
-  //   }
-  //   const response = await fetch(
-  //     `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latlng}&key=${apiKey}`,
-  //   );
-  //   const data = await response.json();
-  //   return data;
-  // }
-  // este no se que busca
   findByEmailWithPassword(email: string) {
     return this.userRepository.findOne({
       where: { email },
@@ -87,15 +87,8 @@ export class UsersService {
 
   async findAll() {
     return await this.userRepository.find();
-    // return this.userRepository.find({
-    //   relations: {
-    //     restaurants: true,
-    //   },
-    // });
+
   }
-
-
-
 
   async findOne(id: string) {
     return await this.userRepository.findOneBy({ id });
@@ -168,7 +161,6 @@ export class UsersService {
 
   async uploadImageProfile(id: string, image: Express.Multer.File) {
     const user = await this.findOne(id);
-    console.log("🚀 ~ UsersService ~ uploadImageProfile ~ user:", user)
 
     if (!user) {
 
@@ -192,79 +184,4 @@ export class UsersService {
     return `This action removes a #${id} user`;
   }
 
-  // async addFavoriteRestaurant(
-  //   addFavoriteDto: AddFavoriteDto,
-  //   userActive: UserActiveInterface,
-  // ): Promise<User> {
-  //   const user = await this.findOne(userActive.id);
-  //   if (!user) {
-  //     throw new UnauthorizedException('userId is wrong');
-  //   }
-  //   const { restaurantId } = addFavoriteDto;
-  //   const restaurant = await this.restaurantsService.findOne(restaurantId);
-
-  //   if (!user.favoriteRestaurants) {
-  //     user.favoriteRestaurants = [restaurant];
-  //     console.log('no tiene favorito');
-  //   } else {
-  //     console.log('si tiene favorito');
-  //     if (
-  //       !user.favoriteRestaurants.find(
-  //         (favRestaurant) => favRestaurant.id === restaurant.id,
-  //       )
-  //     ) {
-  //       console.log('lo agrega');
-  //       user.favoriteRestaurants.push(restaurant);
-  //       console.log(
-  //         '🚀 ~ file: users.service.ts:100 ~ UsersService ~ addFavoriteRestaurant ~ user:',
-  //         user,
-  //       );
-  //     } else {
-  //       throw new NotFoundException('Restaurant is already in favorites');
-  //     }
-  //   }
-  //   return this.userRepository.save(user);
-  // }
-
-  // async removeFavoriteRestaurant(
-  //   restaurantId: string,
-  //   userActive: UserActiveInterface,
-  // ): Promise<User> {
-  //   const user = await this.findOne(userActive.id);
-  //   if (!user) {
-  //     throw new UnauthorizedException('userId is wrong');
-  //   }
-  //   user.favoriteRestaurants = user.favoriteRestaurants.filter(
-  //     (restaurant) => restaurant.id !== restaurantId,
-  //   );
-  //   return this.userRepository.save(user);
-  // }
-
-  // async findFavoriteRestaurantByIdAndUser(
-  //   restaurantId: string,
-  //   userActive: UserActiveInterface,
-  // ): Promise<Boolean> {
-  //   const user = await this.findOne(userActive.id);
-  //   if (!user) {
-  //     throw new UnauthorizedException('userId is wrong');
-  //   }
-  //   if (!user.favoriteRestaurants) {
-  //     return false;
-  //   }
-  //   const favoriteRestaurants = user.favoriteRestaurants.filter(
-  //     (restaurant) => restaurant.id === restaurantId,
-  //   );
-  //   return favoriteRestaurants.length ? true : false;
-  // }
-
-  // async findAllFavoritesByUser(
-  //   userActive: UserActiveInterface,
-  // ): Promise<Restaurant[]> {
-  //   const user = await this.findOne(userActive.id);
-  //   if (!user) {
-  //     throw new UnauthorizedException('userId is wrong');
-  //   }
-  //   const { favoriteRestaurants } = user;
-  //   return favoriteRestaurants;
-  // }
 }

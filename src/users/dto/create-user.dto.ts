@@ -17,13 +17,13 @@ export class CreateUserDto {
   @Transform(({ value }) => value.trim())
   @IsString()
   @MinLength(1)
-  name?: string;
+  name: string;
 
 
   @Transform(({ value }) => value.trim())
   @IsString()
   @MinLength(1)
-  lastname?: string;
+  lastname: string;
 
   @IsEmail()
   email: string;
@@ -35,7 +35,6 @@ export class CreateUserDto {
 
   @IsOptional()
   @IsString()
-
   urlAvatar?: string;
 
 

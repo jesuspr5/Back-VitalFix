@@ -12,7 +12,6 @@ import { AuthService } from 'src/auth/auth.service';
   imports: [
     ConfigModule,
     FirebaseModule,
-    // forwardRef(() => RestaurantsModule),
     TypeOrmModule.forFeature([User]),
     forwardRef(() => AuthModule),
   ],
