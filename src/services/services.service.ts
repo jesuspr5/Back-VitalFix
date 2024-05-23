@@ -30,9 +30,9 @@ export class ServicesService {
   async create(createServiceDto: CreateServiceDto): Promise<Service> {
     const { type, ...serviceData } = createServiceDto;
 
-    const typeService = await this.typeserviceRepository.findOne({ where: { name: type } });
+    const typeService = await this.typeserviceRepository.findOne({ where: { id: type } });
     if (!typeService) {
-      throw new NotFoundException(`TypeService with name ${type} not found`);
+      throw new NotFoundException(`TypeService with id ${type} not found`);
     }
 
     const service = this.serviceRepository.create({
@@ -72,6 +72,7 @@ export class ServicesService {
     // Devuelve el servicio actualizado después de la actualización en la base de datos
     return await this.findOne(id);
   }
+
   async remove(id: string) {
 
     return this.serviceRepository.softDelete({ id });

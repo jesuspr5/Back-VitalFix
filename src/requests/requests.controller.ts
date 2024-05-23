@@ -17,10 +17,9 @@ import { CreateRequestDto } from './dto/create-request.dto';
 import { UpdateRequestDto } from './dto/update-request.dto';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { Auth } from '../auth/decorators/auth.decorator';
 import { ActiveUser } from '../common/decorators/active-user.decorator';
 import { UserActiveInterface } from '../common/interfaces/user-active.interface';
-import { auth } from 'firebase-admin';
+
 
 @ApiBearerAuth()
 @ApiTags('Request')

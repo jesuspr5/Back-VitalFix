@@ -15,8 +15,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Request } from './entities/request.entity';
 import { PatchType } from '../common/enums/patch.enum';
-import { Typeservice } from 'src/typeservice/entities/typeservice.entity';
 import { url } from 'inspector';
+import { Service } from 'src/services/entities/service.entity';
 
 @Injectable()
 export class RequestsService {
@@ -26,8 +26,8 @@ export class RequestsService {
     private readonly requestRepository: Repository<Request>,
     private readonly firebaseService: FirebaseService,
     private readonly configService: ConfigService,
-    @InjectRepository(Typeservice)
-    private readonly typeserviceRepository: Repository<Typeservice>,
+    @InjectRepository(Service)
+    private readonly serviceRepository: Repository<Service>,
   ) { }
 
   async create(createRequestDto: CreateRequestDto, image?: Express.Multer.File): Promise<Request> {
@@ -37,21 +37,15 @@ export class RequestsService {
       PatchType.SERVICES,
     );
     createRequestDto.urlAvatar = url;
-
     const { type, ...requestData } = createRequestDto;
-
-    const typeService = await this.typeserviceRepository.findOne({ where: { name: type } });
+    const typeService = await this.serviceRepository.findOne({ where: { id: type } });
     if (!typeService) {
-      throw new NotFoundException(`TypeService with name ${type} not found`);
+      throw new NotFoundException(`Service with id ${type} not found`);
     }
-
-
     const request = this.requestRepository.create({
       ...requestData,
-      type: typeService,
+      service: typeService,
     });
-
-
     return this.requestRepository.save(request);
   }
 

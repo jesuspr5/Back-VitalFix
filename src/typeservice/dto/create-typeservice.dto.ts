@@ -2,9 +2,6 @@ import {
     IsNumber,
     IsPositive,
     IsString,
-    IsUUID,
-    Max,
-    Min,
     MinLength,
 } from 'class-validator';
 
@@ -15,5 +12,8 @@ export class CreateTypeserviceDto {
     @MinLength(1)
     name: string;
 
+    @IsNumber()
+    @IsPositive()
+    warrantyDays: number;
 
 }

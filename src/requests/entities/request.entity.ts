@@ -1,3 +1,4 @@
+import { Service } from 'src/services/entities/service.entity';
 import { Typeservice } from 'src/typeservice/entities/typeservice.entity';
 import {
     Entity,
@@ -86,8 +87,15 @@ export class Request {
     updatedAt: Date;
 
 
-    @ManyToOne(() => Typeservice, { eager: true }) // eager para cargar automáticamente el tipo
-    @JoinColumn() // esto asegura que 'type' se refiera a 'name' de Typeservice
-    type: Typeservice;
+    // @ManyToOne(() => Typeservice, { eager: true }) // eager para cargar automáticamente el tipo
+    // @JoinColumn() // esto asegura que 'type' se refiera a 'name' de Typeservice
+    // type: Typeservice;
+
+
+    @ManyToOne(() => Service, service => service.type)
+    service: Service;
+
+    // @OneToMany(() => Request, request => request.client)
+    // requests: Request[];
 
 }

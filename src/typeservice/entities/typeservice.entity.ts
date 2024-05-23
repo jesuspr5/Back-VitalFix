@@ -21,6 +21,9 @@ export class Typeservice {
     @Column()
     name: string;
 
+    @Column()
+    warrantyDays: number;
+
 
     @DeleteDateColumn({ select: false })
     deletedAt: Date;
@@ -41,5 +44,7 @@ export class Typeservice {
 
     @OneToMany(() => Service, (service) => service.type)
     services: Service[];
+
+
 
 }

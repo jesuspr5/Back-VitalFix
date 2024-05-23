@@ -12,28 +12,28 @@ export class CreateRequestDto {
     @Transform(({ value }) => value.trim())
     @IsString()
     @MinLength(1)
-    details?: string;
+    details: string;
 
     @Transform(({ value }) => value.trim())
     @IsString()
     @MinLength(1)
-    maker?: string;
+    maker: string;
 
 
     @Transform(({ value }) => value.trim())
     @IsString()
     @MinLength(1)
-    model?: string;
+    model: string;
 
     @Transform(({ value }) => value.trim())
     @IsString()
     @MinLength(1)
-    serial?: string;
+    serial: string;
 
     @Transform(({ value }) => value.trim())
     @IsString()
     @MinLength(1)
-    description?: string;
+    description: string;
 
     @IsOptional()
     @IsString()
@@ -42,12 +42,12 @@ export class CreateRequestDto {
     @Transform(({ value }) => value.trim())
     @IsString()
     @MinLength(1)
-    name?: string;
+    name: string;
 
     @Transform(({ value }) => value.trim())
     @IsString()
     @MinLength(1)
-    lastname?: string;
+    lastname: string;
 
     @IsEmail()
     email: string;
@@ -55,22 +55,22 @@ export class CreateRequestDto {
     @Transform(({ value }) => value.trim())
     @IsString()
     @MinLength(1)
-    phone?: string;
+    phone: string;
 
     @Transform(({ value }) => value.trim())
     @IsString()
     @MinLength(1)
-    address?: string;
+    address: string;
 
     @Transform(({ value }) => value.trim())
     @IsString()
     @MinLength(1)
-    reference?: string;
+    reference: string;
 
     @Transform(({ value }) => value.trim())
     @IsString()
     @MinLength(1)
-    type?: string;
+    type: string;
 
 
     @Transform(({ value }) => value.trim())
@@ -80,3 +80,4 @@ export class CreateRequestDto {
 
 
 }
+

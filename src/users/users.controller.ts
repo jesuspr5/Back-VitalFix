@@ -17,7 +17,6 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersService } from './users.service';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
-
 import { Auth } from '../auth/decorators/auth.decorator';
 import { Role } from '../common/enums/rol.enum';
 import { ActiveUser } from '../common/decorators/active-user.decorator';
@@ -26,6 +25,7 @@ import { UpdateEmailDto } from './dto/update-email.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 import { AuthService } from 'src/auth/auth.service';
+
 
 
 @ApiBearerAuth()
@@ -41,48 +41,13 @@ export class UsersController {
   create(@Body() createUserDto: CreateUserDto) {
     return this.AuthService.register(createUserDto);
   }
-  // @Auth(Role.USER)
-  // @Post('favorites/add')
-  // async addFavoriteRestaurant(
-  //   @Body() addFavoriteDto: AddFavoriteDto,
-  //   @ActiveUser() userActive: UserActiveInterface,
-  // ) {
-  //   const user = await this.usersService.addFavoriteRestaurant(
-  //     addFavoriteDto,
-  //     userActive,
-  //   );
-  //   return user;
+
+  // @Post('client')
+  // createUserClient(@Body() createUserDto: CreateUserDto) {
+  //   return this.usersService.createUserClient(createUserDto);
   // }
 
-  // @Auth(Role.USER)
-  // @Get('favorites/:id')
-  // async findFavoriteRestaurantByIdAndUser(
-  //   @Param('id') restaurantId: string,
-  //   @ActiveUser() userActive: UserActiveInterface,
-  // ) {
-  //   return await this.usersService.findFavoriteRestaurantByIdAndUser(
-  //     restaurantId,
-  //     userActive,
-  //   );
-  // }
-  // @Auth(Role.USER)
-  // @Get('favorites')
-  // async findAllFavoritesByUser(@ActiveUser() userActive: UserActiveInterface) {
-  //   return await this.usersService.findAllFavoritesByUser(userActive);
-  // }
 
-  // @Auth(Role.USER)
-  // @Delete('favorites/remove/:id')
-  // async removeFavoriteRestaurant(
-  //   @Param('id') restaurantId: string,
-  //   @ActiveUser() userActive: UserActiveInterface,
-  // ) {
-  //   const user = await this.usersService.removeFavoriteRestaurant(
-  //     restaurantId,
-  //     userActive,
-  //   );
-  //   return user;
-  // }
 
   @Patch('uploadImage/:id')
   @ApiConsumes('multipart/form-data')

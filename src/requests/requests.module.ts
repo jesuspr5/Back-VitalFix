@@ -7,13 +7,14 @@ import { AuthModule } from 'src/auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { FirebaseModule } from 'src/firebase/firebase.module';
 import { FirebaseService } from 'src/firebase/firebase.service';
-import { Typeservice } from 'src/typeservice/entities/typeservice.entity';
+import { Service } from 'src/services/entities/service.entity';
+
 
 @Module({
   imports: [
     ConfigModule,
     FirebaseModule,
-    TypeOrmModule.forFeature([Request, Typeservice]),
+    TypeOrmModule.forFeature([Request, Service]),
     forwardRef(() => AuthModule),
 
   ],

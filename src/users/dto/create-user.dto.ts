@@ -37,4 +37,15 @@ export class CreateUserDto {
   @IsString()
 
   urlAvatar?: string;
+
+
+}
+
+export class UserDto {
+  readonly id: string;
+  readonly role: Role
+  readonly name: string;
+  readonly lastname: string;
+  readonly email: string;
+
 }

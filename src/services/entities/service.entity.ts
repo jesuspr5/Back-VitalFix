@@ -7,9 +7,11 @@ import {
     CreateDateColumn,
     Index,
     ManyToOne,
-    JoinColumn
+    JoinColumn,
+    OneToMany
 } from 'typeorm';
 import { Typeservice } from 'src/typeservice/entities/typeservice.entity';
+import { Request } from 'src/requests/entities/request.entity';
 
 
 @Entity()
@@ -51,6 +53,10 @@ export class Service {
     @ManyToOne(() => Typeservice, { eager: true }) // eager para cargar automáticamente el tipo
     @JoinColumn()
     type: Typeservice;
+
+    @OneToMany(() => Request, (request) => request.service)
+    request: Request[];
+
 
 }
 

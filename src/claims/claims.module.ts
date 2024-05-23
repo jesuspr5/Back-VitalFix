@@ -6,4 +6,4 @@ import { ClaimsController } from './claims.controller';
   controllers: [ClaimsController],
   providers: [ClaimsService]
 })
-export class ClaimsModule {}
+export class ClaimsModule { }
