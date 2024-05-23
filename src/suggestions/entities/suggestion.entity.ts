@@ -1,3 +1,4 @@
+
 import {
     Entity,
     Column,
@@ -9,27 +10,18 @@ import {
     ManyToOne,
     JoinColumn
 } from 'typeorm';
-import { Typeservice } from 'src/typeservice/entities/typeservice.entity';
-
-
 @Entity()
-export class Service {
+export class Suggestion {
+
     @Index()
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
     @Column()
-    name: string;
-
-
-    @Column()
-    price: number;
-
-    @Column()
     description: string;
 
     @Column()
-    status: string;
+    email: string;
 
     @DeleteDateColumn({ select: false })
     deletedAt: Date;
@@ -47,10 +39,4 @@ export class Service {
     })
     updatedAt: Date;
 
-
-    @ManyToOne(() => Typeservice, { eager: true }) // eager para cargar automáticamente el tipo
-    @JoinColumn()
-    type: Typeservice;
-
 }
-

@@ -171,11 +171,11 @@ export class UsersService {
     console.log("🚀 ~ UsersService ~ uploadImageProfile ~ user:", user)
 
     if (!user) {
-      console.log("no hay id ")
+
       throw new UnauthorizedException('id is wrong');
     }
     if (user.urlAvatar) {
-      console.log("hay id ")
+
       await this.firebaseService.deleteImage(user.urlAvatar);
     }
 

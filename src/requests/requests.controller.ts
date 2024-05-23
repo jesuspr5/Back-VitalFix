@@ -35,6 +35,7 @@ export class RequestsController {
     schema: {
       type: 'object',
       properties: {
+        type: { type: 'string' },
         details: { type: 'string' },
         maker: { type: 'string' },
         model: { type: 'string' },
@@ -50,6 +51,7 @@ export class RequestsController {
         image: {
           type: 'string',
           format: 'binary',
+          nullable: true,
         },
       },
     },
@@ -67,7 +69,6 @@ export class RequestsController {
     image: Express.Multer.File,
 
   ) {
-    console.log("🚀 ~ RequestsController ~ createRequestDto:", createRequestDto)
     return this.RequestsService.create(createRequestDto, image);
   }
 
@@ -113,8 +114,48 @@ export class RequestsController {
 
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateRequestDto: UpdateRequestDto) {
-    return this.RequestsService.update(id, updateRequestDto);
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    description: 'actualizar datos',
+    schema: {
+      type: 'object',
+      properties: {
+        type: { type: 'string' },
+        details: { type: 'string' },
+        maker: { type: 'string' },
+        model: { type: 'string' },
+        serial: { type: 'string' },
+        description: { type: 'string', nullable: true },
+        name: { type: 'string' },
+        lastname: { type: 'string' },
+        email: { type: 'string' },
+        phone: { type: 'string' },
+        address: { type: 'string' },
+        reference: { type: 'string' },
+        status: { type: 'string' },
+        image: {
+          type: 'string',
+          format: 'binary',
+          nullable: true,
+        },
+      },
+    },
+  })
+  @UseInterceptors(FileInterceptor('image'))
+  update(@Param('id') id: string, @Body() updateRequestDto: UpdateRequestDto,
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({ maxSize: 5242880 }),
+          new FileTypeValidator({ fileType: /(jpg|jpeg|png)$/ }),
+        ],
+
+      }),
+    )
+    image?: Express.Multer.File,) {
+
+
+    return this.RequestsService.update(id, updateRequestDto, image);
   }
 
   @Delete(':id')

@@ -1,3 +1,4 @@
+import { Typeservice } from 'src/typeservice/entities/typeservice.entity';
 import {
     Entity,
     Column,
@@ -6,6 +7,8 @@ import {
     UpdateDateColumn,
     CreateDateColumn,
     Index,
+    ManyToOne,
+    JoinColumn
 } from 'typeorm';
 
 @Entity()
@@ -81,5 +84,10 @@ export class Request {
         onUpdate: 'CURRENT_TIMESTAMP(6)',
     })
     updatedAt: Date;
+
+
+    @ManyToOne(() => Typeservice, { eager: true }) // eager para cargar automáticamente el tipo
+    @JoinColumn() // esto asegura que 'type' se refiera a 'name' de Typeservice
+    type: Typeservice;
 
 }

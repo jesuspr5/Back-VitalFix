@@ -70,6 +70,12 @@ export class CreateRequestDto {
     @Transform(({ value }) => value.trim())
     @IsString()
     @MinLength(1)
+    type?: string;
+
+
+    @Transform(({ value }) => value.trim())
+    @IsString()
+    @MinLength(1)
     status?: string;
 
 

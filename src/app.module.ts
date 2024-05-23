@@ -11,6 +11,8 @@ import { ServicesModule } from './services/services.module';
 import { RequestsModule } from './requests/requests.module';
 import { ReviewsModule } from './reviews/reviews.module';
 import { TypeserviceModule } from './typeservice/typeservice.module';
+import { SuggestionsModule } from './suggestions/suggestions.module';
+import { ClaimsModule } from './claims/claims.module';
 
 
 @Module({
@@ -47,6 +49,8 @@ import { TypeserviceModule } from './typeservice/typeservice.module';
     RequestsModule,
     ReviewsModule,
     TypeserviceModule,
+    SuggestionsModule,
+    ClaimsModule,
   ],
   controllers: [],
   providers: [],
