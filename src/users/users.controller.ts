@@ -40,7 +40,7 @@ export class UsersController {
 
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
-    return this.AuthService.register(createUserDto);
+    return this.usersService.create(createUserDto);
   }
 
   // @Post('client')

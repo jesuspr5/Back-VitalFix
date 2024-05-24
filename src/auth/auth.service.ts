@@ -28,7 +28,7 @@ export class AuthService {
       throw new BadRequestException('User already exists');
     }
 
-    await this.usersService.create({
+    await this.usersService.createuser({
       role,
       name,
       lastname,

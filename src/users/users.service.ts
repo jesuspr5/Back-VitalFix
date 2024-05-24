@@ -31,6 +31,14 @@ export class UsersService {
     private readonly configService: ConfigService,
   ) { }
 
+
+  async createuser(createUserDto: CreateUserDto) {
+    return this.userRepository.save(createUserDto);
+  }
+
+
+
+
   async create(createUserDto: CreateUserDto,) {
     console.log("🚀 ~ UsersService ~ create ~ createUserDto:", createUserDto)
 
