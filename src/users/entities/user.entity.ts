@@ -8,8 +8,9 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Role } from '../../common/enums/rol.enum';
-// import { Technical } from './technical.entity';
-import { Client } from './client.entity';
+import { UserDto } from '../dto/create-user.dto';
+import { Request } from 'src/requests/entities/request.entity';
+import { request } from 'http';
 
 
 @Entity()
@@ -52,8 +53,10 @@ export class User {
   urlAvatar: string;
 
 
-  // @OneToMany(() => Client, client => client.user)
-  // clients: Client[];
+  @OneToMany(() => Request, request => request.user)
+  requests: Request[];
+
+
 
   // @OneToMany(() => Technical, technical => technical.user)
   // technicals: Technical[];

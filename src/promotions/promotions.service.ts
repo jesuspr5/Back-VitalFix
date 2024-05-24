@@ -19,18 +19,13 @@ export class PromotionsService {
   constructor(
     @InjectRepository(Promotion)
     private readonly promotionRepository: Repository<Promotion>,
-    @Inject(forwardRef(() => UsersService))
-    private readonly userService: UsersService,
+
   ) { }
   async create(
     createPromotionDto: CreatePromotionDto,
-    userActive: UserActiveInterface,
+
   ) {
-    createPromotionDto
-    const user = await this.userService.findOne(userActive.id);
-    if (!user) {
-      throw new UnauthorizedException('userId is wrong');
-    }
+
     return await this.promotionRepository.save(createPromotionDto);
   }
 

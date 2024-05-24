@@ -20,10 +20,9 @@ export class PromotionsController {
 
   @Post()
   create(
-    @ActiveUser() userActive: UserActiveInterface,
     @Body() createPromotionDto: CreatePromotionDto
   ) {
-    return this.promotionsService.create(createPromotionDto, userActive);
+    return this.promotionsService.create(createPromotionDto);
   }
 
   @Get()

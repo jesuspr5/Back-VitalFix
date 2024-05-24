@@ -1,5 +1,5 @@
 import { Service } from 'src/services/entities/service.entity';
-import { Typeservice } from 'src/typeservice/entities/typeservice.entity';
+import { User } from 'src/users/entities/user.entity';
 import {
     Entity,
     Column,
@@ -92,10 +92,12 @@ export class Request {
     // type: Typeservice;
 
 
-    @ManyToOne(() => Service, service => service.type)
+    @ManyToOne(() => Service, { eager: true })
     service: Service;
 
-    // @OneToMany(() => Request, request => request.client)
-    // requests: Request[];
+    @ManyToOne(() => User, { eager: true })
+    user: User;
 
+    // @ManyToOne(() => User, user => user.requests)
+    // user: User;
 }

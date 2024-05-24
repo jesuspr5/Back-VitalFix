@@ -3,11 +3,14 @@ import {
     IsEmail,
     IsOptional,
     IsString,
+    IsUUID,
     IsUrl,
     MinLength,
 } from 'class-validator';
 export class CreateRequestDto {
 
+
+    user: string;
 
     @Transform(({ value }) => value.trim())
     @IsString()

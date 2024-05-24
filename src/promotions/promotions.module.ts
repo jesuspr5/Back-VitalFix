@@ -9,7 +9,6 @@ import { AuthModule } from 'src/auth/auth.module';
 import { UsersModule } from '../users/users.module';
 @Module({
   imports: [
-    forwardRef(() => UsersModule),
     forwardRef(() => AuthModule),
     FirebaseModule,
     TypeOrmModule.forFeature([Promotion]),

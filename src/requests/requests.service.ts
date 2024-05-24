@@ -17,6 +17,8 @@ import { Request } from './entities/request.entity';
 import { PatchType } from '../common/enums/patch.enum';
 import { url } from 'inspector';
 import { Service } from 'src/services/entities/service.entity';
+import { UserActiveInterface } from 'src/common/interfaces/user-active.interface';
+import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class RequestsService {
@@ -24,13 +26,22 @@ export class RequestsService {
   constructor(
     @InjectRepository(Request)
     private readonly requestRepository: Repository<Request>,
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
     private readonly firebaseService: FirebaseService,
     private readonly configService: ConfigService,
     @InjectRepository(Service)
     private readonly serviceRepository: Repository<Service>,
   ) { }
 
-  async create(createRequestDto: CreateRequestDto, image?: Express.Multer.File): Promise<Request> {
+  async create(createRequestDto: CreateRequestDto, userActive: UserActiveInterface, image?: Express.Multer.File): Promise<Request> {
+    const { id } = userActive;
+    console.log("🚀 ~ RequestsService ~ create ~ id:", id);
+
+    const user = await this.userRepository.findOne({ where: { id } });
+    if (!user) {
+      throw new UnauthorizedException('User ID is wrong');
+    }
 
     const url = await this.firebaseService.uploadImage(
       image,
@@ -45,6 +56,7 @@ export class RequestsService {
     const request = this.requestRepository.create({
       ...requestData,
       service: typeService,
+      user: user
     });
     return this.requestRepository.save(request);
   }

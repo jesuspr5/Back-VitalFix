@@ -19,11 +19,14 @@ import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ActiveUser } from '../common/decorators/active-user.decorator';
 import { UserActiveInterface } from '../common/interfaces/user-active.interface';
+import { Auth } from 'src/auth/decorators/auth.decorator';
+import { Role } from 'src/common/enums/rol.enum';
 
 
 @ApiBearerAuth()
 @ApiTags('Request')
 @Controller('requests')
+@Auth(Role.USER)
 export class RequestsController {
   constructor(private readonly RequestsService: RequestsService) { }
 
@@ -56,7 +59,7 @@ export class RequestsController {
     },
   })
   @UseInterceptors(FileInterceptor('image'))
-  create(@Body() createRequestDto: CreateRequestDto,
+  create(@Body() createRequestDto: CreateRequestDto, @ActiveUser() userActive: UserActiveInterface,
     @UploadedFile(
       new ParseFilePipe({
         validators: [
@@ -68,7 +71,8 @@ export class RequestsController {
     image: Express.Multer.File,
 
   ) {
-    return this.RequestsService.create(createRequestDto, image);
+    console.log("🚀 ~ RequestsController ~ userActive:", userActive.id)
+    return this.RequestsService.create(createRequestDto, userActive, image);
   }
 
 
