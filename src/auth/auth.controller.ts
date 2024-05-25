@@ -30,6 +30,7 @@ export class AuthController {
   }
   @ApiBearerAuth()
   @Get('profile')
+  @Auth(Role.USER, Role.ADMIN, Role.TECNICHAL)
   profile(@ActiveUser() user: UserActiveInterface) {
     console.log(user);
     return this.authService.profile(user);

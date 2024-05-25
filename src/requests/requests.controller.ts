@@ -26,11 +26,12 @@ import { Role } from 'src/common/enums/rol.enum';
 @ApiBearerAuth()
 @ApiTags('Request')
 @Controller('requests')
-@Auth(Role.USER)
+
 export class RequestsController {
   constructor(private readonly RequestsService: RequestsService) { }
 
   @Post()
+  @Auth(Role.USER, Role.TECNICHAL)
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     description: 'cargar datos',
