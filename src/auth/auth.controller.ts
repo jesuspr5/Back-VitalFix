@@ -11,7 +11,7 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService) { }
 
   @Post('register')
   register(
@@ -30,7 +30,6 @@ export class AuthController {
   }
   @ApiBearerAuth()
   @Get('profile')
-  @Auth(Role.USER)
   profile(@ActiveUser() user: UserActiveInterface) {
     console.log(user);
     return this.authService.profile(user);
