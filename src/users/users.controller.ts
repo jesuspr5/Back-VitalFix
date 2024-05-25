@@ -79,7 +79,7 @@ export class UsersController {
     return this.usersService.uploadImageProfile(id, image);
   }
 
-  @Auth(Role.ADMIN)
+
   @Get()
   findAll() {
     return this.usersService.findAll();
@@ -91,7 +91,7 @@ export class UsersController {
   //   return this.usersService.searchAddressGoogleMapByLatLng(searchGoogleMap);
   // }
 
-  @Auth(Role.ADMIN)
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(id);

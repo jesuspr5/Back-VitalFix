@@ -12,7 +12,6 @@ import { Role } from 'src/common/enums/rol.enum';
 
 @ApiBearerAuth()
 @ApiTags('promotions')
-@Auth(Role.USER)
 @Controller('promotions')
 
 export class PromotionsController {
