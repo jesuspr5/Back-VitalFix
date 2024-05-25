@@ -1,3 +1,4 @@
+import { Claim } from 'src/claims/entities/claim.entity';
 import { Service } from 'src/services/entities/service.entity';
 import { User } from 'src/users/entities/user.entity';
 import {
@@ -9,7 +10,8 @@ import {
     CreateDateColumn,
     Index,
     ManyToOne,
-    JoinColumn
+    JoinColumn,
+    OneToMany
 } from 'typeorm';
 
 @Entity()
@@ -98,6 +100,9 @@ export class Request {
     @ManyToOne(() => User, { eager: true })
     user: User;
 
+
+    @OneToMany(() => Claim, (claims) => claims.request)
+    claims: Claim[];
     // @ManyToOne(() => User, user => user.requests)
     // user: User;
 }

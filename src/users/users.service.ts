@@ -40,10 +40,7 @@ export class UsersService {
 
 
   async create(createUserDto: CreateUserDto,) {
-    console.log("🚀 ~ UsersService ~ create ~ createUserDto:", createUserDto)
-
     const { email, ...serviceData } = createUserDto;
-    console.log("🚀 ~ UsersService ~ create ~ email:", email)
     if (!email) {
       throw new BadRequestException('debe ingresar un email');
     }

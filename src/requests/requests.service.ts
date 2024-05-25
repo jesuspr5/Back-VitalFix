@@ -71,7 +71,6 @@ export class RequestsService {
 
   async update(@Param('id') id: string, updateRequestDto: UpdateRequestDto, image?: Express.Multer.File): Promise<Request> {
     console.log("🚀 ~ RequestsService ~ update ~ image:", image)
-    console.log("🚀 ~ RequestsService ~ update ~ updateRequestDto:", updateRequestDto)
     const { type, ...updateData } = updateRequestDto;
 
 

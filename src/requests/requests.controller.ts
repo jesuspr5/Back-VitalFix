@@ -140,6 +140,7 @@ export class RequestsController {
           type: 'string',
           format: 'binary',
           nullable: true,
+
         },
       },
     },
@@ -152,11 +153,11 @@ export class RequestsController {
           new MaxFileSizeValidator({ maxSize: 5242880 }),
           new FileTypeValidator({ fileType: /(jpg|jpeg|png)$/ }),
         ],
-
+        fileIsRequired: false,
       }),
     )
     image?: Express.Multer.File,) {
-
+    console.log("🚀 ~ RequestsController ~ image:", image)
 
     return this.RequestsService.update(id, updateRequestDto, image);
   }
