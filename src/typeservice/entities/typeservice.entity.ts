@@ -24,6 +24,9 @@ export class Typeservice {
     @Column()
     warrantyDays: number;
 
+    @Column()
+    status: string;
+
 
     @DeleteDateColumn({ select: false })
     deletedAt: Date;

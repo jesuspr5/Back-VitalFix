@@ -1,3 +1,4 @@
+import { Transform } from 'class-transformer';
 import {
     IsNumber,
     IsPositive,
@@ -7,7 +8,7 @@ import {
 
 
 export class CreateTypeserviceDto {
-
+    @Transform(({ value }) => value.trim())
     @IsString()
     @MinLength(1)
     name: string;
@@ -15,5 +16,10 @@ export class CreateTypeserviceDto {
     @IsNumber()
     @IsPositive()
     warrantyDays: number;
+
+    @Transform(({ value }) => value.trim())
+    @IsString()
+    @MinLength(1)
+    status?: string;
 
 }
