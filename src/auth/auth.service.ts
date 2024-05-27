@@ -63,6 +63,7 @@ export class AuthService {
 
     return {
       id: user.id,
+      role:user.role,
       token,
       email,
       name: user.name,
