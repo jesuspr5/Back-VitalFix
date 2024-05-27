@@ -34,6 +34,6 @@ export class SuggestionsController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.suggestionsService.remove(+id);
+    return this.suggestionsService.remove(id);
   }
 }

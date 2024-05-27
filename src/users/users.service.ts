@@ -164,10 +164,8 @@ export class UsersService {
     if (!user) {
       throw new UnauthorizedException('id is wrong');
     }
-    await this.userRepository.update(id, { ...updateProfileDto });
-    return {
-      displayName: `${updateProfileDto.name} ${updateProfileDto.lastname}`,
-    };
+  return   await this.userRepository.update(id, { ...updateProfileDto });
+    
   }
 
   async uploadImageProfile(id: string, image: Express.Multer.File) {

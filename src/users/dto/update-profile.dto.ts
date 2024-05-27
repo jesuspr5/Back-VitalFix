@@ -11,4 +11,19 @@ export class UpdateProfileDto {
   @IsString()
   @MinLength(1)
   lastname: string;
+
+  @Transform(({ value }) => value.trim())
+  @IsString()
+  @MinLength(1)
+  reference: string;
+
+  @Transform(({ value }) => value.trim())
+  @IsString()
+  @MinLength(1)
+  address: string;
+
+  @Transform(({ value }) => value.trim())
+  @IsString()
+  @MinLength(1)
+  phone: string;
 }

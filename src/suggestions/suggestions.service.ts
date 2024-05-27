@@ -48,7 +48,8 @@ export class SuggestionsService {
     return updateSuggestionDto;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} suggestion`;
+ async remove(id: string) {
+    await this.findOne(id);
+    return this.SuggestionRepository.softRemove({ id });
   }
 }
