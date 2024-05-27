@@ -68,7 +68,11 @@ export class RequestsService {
     const { id } = userActive
     return this.requestRepository.createQueryBuilder('request')
       .leftJoinAndSelect('request.user', 'user')
+      .leftJoinAndSelect('request.service', 'service')
+      .leftJoinAndSelect('service.type', 'TypeService')
+      .leftJoinAndSelect('request.claims', 'Claim')
       .where('user.id = :id', { id })
+
       .getMany();
   }
 
