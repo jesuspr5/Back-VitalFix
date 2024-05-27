@@ -13,6 +13,8 @@ import { ReviewsModule } from './reviews/reviews.module';
 import { TypeserviceModule } from './typeservice/typeservice.module';
 import { SuggestionsModule } from './suggestions/suggestions.module';
 import { ClaimsModule } from './claims/claims.module';
+import { MailsModule } from './mails/mails.module';
+
 
 
 @Module({
@@ -51,6 +53,9 @@ import { ClaimsModule } from './claims/claims.module';
     TypeserviceModule,
     SuggestionsModule,
     ClaimsModule,
+    MailsModule,
+
+
   ],
   controllers: [],
   providers: [],
