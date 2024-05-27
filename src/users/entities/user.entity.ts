@@ -10,7 +10,7 @@ import {
 import { Role } from '../../common/enums/rol.enum';
 import { UserDto } from '../dto/create-user.dto';
 import { Request } from 'src/requests/entities/request.entity';
-import { request } from 'http';
+
 
 
 @Entity()
@@ -32,6 +32,15 @@ export class User {
 
   @Column({ type: 'enum', default: Role.USER, enum: Role })
   role: Role;
+
+  @Column({ nullable: true })
+  reference: string;
+
+  @Column({ nullable: true })
+  address: string;
+
+  @Column({ nullable: true })
+  phone: string;
 
   @DeleteDateColumn({ select: false })
   deletedAt: Date;

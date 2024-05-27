@@ -4,9 +4,11 @@ import {
   Delete,
   FileTypeValidator,
   Get,
+  HttpStatus,
   MaxFileSizeValidator,
   Param,
   ParseFilePipe,
+  ParseFilePipeBuilder,
   Patch,
   Post,
   UploadedFile,
@@ -28,10 +30,22 @@ import { Role } from 'src/common/enums/rol.enum';
 @Controller('requests')
 
 export class RequestsController {
-  constructor(private readonly RequestsService: RequestsService) { }
+  constructor(private readonly requestsService: RequestsService) { }
+
+
+
+  @Auth(Role.USER, Role.TECNICHAL, Role.TECNICHAL)
+  @Get('byUser/')
+  async obteneruser(@ActiveUser() userActive: UserActiveInterface) {
+
+    return await this.requestsService.findRequestByUser(userActive);
+  }
+
+
+
 
   @Post()
-  @Auth(Role.USER, Role.TECNICHAL)
+  @Auth(Role.USER, Role.TECNICHAL, Role.ADMIN)
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     description: 'cargar datos',
@@ -55,6 +69,7 @@ export class RequestsController {
           type: 'string',
           format: 'binary',
           nullable: true,
+
         },
       },
     },
@@ -62,30 +77,40 @@ export class RequestsController {
   @UseInterceptors(FileInterceptor('image'))
   create(@Body() createRequestDto: CreateRequestDto, @ActiveUser() userActive: UserActiveInterface,
     @UploadedFile(
-      new ParseFilePipe({
-        validators: [
-          new MaxFileSizeValidator({ maxSize: 5242880 }),
-          new FileTypeValidator({ fileType: /(jpg|jpeg|png)$/ }),
-        ],
-      }),
-    )
-    image: Express.Multer.File,
+      new ParseFilePipeBuilder()
+        .addFileTypeValidator({
+          fileType: /(jpg|jpeg|png)$/
 
+        })
+        .addMaxSizeValidator({
+          maxSize: 5242880
+        })
+        .build({
+          errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+          fileIsRequired: false, // Esto permite que el archivo sea opcional
+        }),
+
+    ) image?: Express.Multer.File,
   ) {
-    console.log("🚀 ~ RequestsController ~ userActive:", userActive.id)
-    return this.RequestsService.create(createRequestDto, userActive, image);
+    return this.requestsService.create(createRequestDto, userActive, image);
   }
 
 
   @Get()
   findAll() {
-    return this.RequestsService.findAll();
+    return this.requestsService.findAll();
   }
+
+
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.RequestsService.findOne(id);
+    return this.requestsService.findOne(id);
   }
+
+
+
+
 
   @Patch('uploadImage/:id')
   @ApiConsumes('multipart/form-data')
@@ -113,7 +138,7 @@ export class RequestsController {
     image: Express.Multer.File,
     @Param('id') id: string,
   ) {
-    return this.RequestsService.uploadImageRequest(id, image);
+    return this.requestsService.uploadImageRequest(id, image);
   }
 
 
@@ -158,13 +183,15 @@ export class RequestsController {
       }),
     )
     image?: Express.Multer.File,) {
-    console.log("🚀 ~ RequestsController ~ image:", image)
 
-    return this.RequestsService.update(id, updateRequestDto, image);
+
+    return this.requestsService.update(id, updateRequestDto, image);
   }
+
+
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.RequestsService.remove(id);
+    return this.requestsService.remove(id);
   }
 }

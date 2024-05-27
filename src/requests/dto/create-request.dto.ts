@@ -6,6 +6,7 @@ import {
     IsUUID,
     IsUrl,
     MinLength,
+    IsEmpty,
 } from 'class-validator';
 export class CreateRequestDto {
 
@@ -39,8 +40,7 @@ export class CreateRequestDto {
     description: string;
 
     @IsOptional()
-    @IsString()
-    urlAvatar?: string;
+    urlAvatar?: string | null;
 
     @Transform(({ value }) => value.trim())
     @IsString()

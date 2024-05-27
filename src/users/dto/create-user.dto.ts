@@ -33,6 +33,21 @@ export class CreateUserDto {
   @MinLength(6)
   password: string;
 
+  @Transform(({ value }) => value.trim())
+  @IsString()
+  @MinLength(1)
+  reference: string;
+
+  @Transform(({ value }) => value.trim())
+  @IsString()
+  @MinLength(1)
+  address: string;
+
+  @Transform(({ value }) => value.trim())
+  @IsString()
+  @MinLength(1)
+  phone: string;
+
   @IsOptional()
   @IsString()
   urlAvatar?: string;

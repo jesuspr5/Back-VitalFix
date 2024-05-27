@@ -41,7 +41,7 @@ export class Request {
     description?: string;
 
     @Column({ nullable: true })
-    urlAvatar: string;
+    urlAvatar?: string | null;
 
 
 
@@ -97,7 +97,7 @@ export class Request {
     @ManyToOne(() => Service, { eager: true })
     service: Service;
 
-    @ManyToOne(() => User, { eager: true })
+    @ManyToOne(() => User, user => user.requests, { eager: true })
     user: User;
 
 

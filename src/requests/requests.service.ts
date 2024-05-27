@@ -20,6 +20,7 @@ import { Service } from 'src/services/entities/service.entity';
 import { UserActiveInterface } from 'src/common/interfaces/user-active.interface';
 import { User } from 'src/users/entities/user.entity';
 
+
 @Injectable()
 export class RequestsService {
 
@@ -36,18 +37,20 @@ export class RequestsService {
 
   async create(createRequestDto: CreateRequestDto, userActive: UserActiveInterface, image?: Express.Multer.File): Promise<Request> {
     const { id } = userActive;
-    console.log("🚀 ~ RequestsService ~ create ~ id:", id);
+
 
     const user = await this.userRepository.findOne({ where: { id } });
     if (!user) {
       throw new UnauthorizedException('User ID is wrong');
     }
+    if (image) {
+      const url = await this.firebaseService.uploadImage(
+        image,
+        PatchType.SERVICES,
+      );
+      createRequestDto.urlAvatar = url;
+    }
 
-    const url = await this.firebaseService.uploadImage(
-      image,
-      PatchType.SERVICES,
-    );
-    createRequestDto.urlAvatar = url;
     const { type, ...requestData } = createRequestDto;
     const typeService = await this.serviceRepository.findOne({ where: { id: type } });
     if (!typeService) {
@@ -60,6 +63,15 @@ export class RequestsService {
     });
     return this.requestRepository.save(request);
   }
+
+  async findRequestByUser(userActive: UserActiveInterface): Promise<Request[]> {
+    const { id } = userActive
+    return this.requestRepository.createQueryBuilder('request')
+      .leftJoinAndSelect('request.user', 'user')
+      .where('user.id = :id', { id })
+      .getMany();
+  }
+
 
   async findAll() {
     return await this.requestRepository.find();

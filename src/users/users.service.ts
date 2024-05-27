@@ -71,6 +71,9 @@ export class UsersService {
         'role',
         'urlAvatar',
         'lastname',
+        'reference',
+        'address',
+        'phone'
       ],
     });
   }
@@ -86,6 +89,9 @@ export class UsersService {
         'role',
         'urlAvatar',
         'lastname',
+        'reference',
+        'address',
+        'phone'
       ],
     });
   }

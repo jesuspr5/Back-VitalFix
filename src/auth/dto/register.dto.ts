@@ -28,4 +28,19 @@ export class RegisterDto {
   @IsString()
   @MinLength(6)
   password: string;
+
+  @Transform(({ value }) => value.trim())
+  @IsString()
+  @MinLength(1)
+  reference: string;
+
+  @Transform(({ value }) => value.trim())
+  @IsString()
+  @MinLength(1)
+  address: string;
+
+  @Transform(({ value }) => value.trim())
+  @IsString()
+  @MinLength(1)
+  phone: string;
 }
