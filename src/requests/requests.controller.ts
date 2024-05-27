@@ -25,17 +25,15 @@ import { Auth } from 'src/auth/decorators/auth.decorator';
 import { Role } from 'src/common/enums/rol.enum';
 
 
-@ApiBearerAuth()
 @ApiTags('Request')
 @Controller('requests')
 
 export class RequestsController {
   constructor(private readonly requestsService: RequestsService) { }
 
-
-
-  @Auth(Role.USER, Role.TECNICHAL, Role.TECNICHAL)
+  @ApiBearerAuth()
   @Get('byUser/')
+  @Auth(Role.USER, Role.ADMIN, Role.TECNICHAL)
   async obteneruser(@ActiveUser() userActive: UserActiveInterface) {
 
     return await this.requestsService.findRequestByUser(userActive);
@@ -43,9 +41,9 @@ export class RequestsController {
 
 
 
-
+  @ApiBearerAuth()
   @Post()
-  @Auth(Role.USER, Role.TECNICHAL, Role.ADMIN)
+  @Auth(Role.USER, Role.ADMIN)
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     description: 'cargar datos',
@@ -95,24 +93,23 @@ export class RequestsController {
     return this.requestsService.create(createRequestDto, userActive, image);
   }
 
-
+  @ApiBearerAuth()
   @Get()
+  @Auth(Role.USER, Role.ADMIN,Role.TECNICHAL)
   findAll() {
     return this.requestsService.findAll();
   }
 
-
-
+  @ApiBearerAuth()
   @Get(':id')
+  @Auth(Role.USER, Role.ADMIN,Role.TECNICHAL)
   findOne(@Param('id') id: string) {
     return this.requestsService.findOne(id);
   }
 
-
-
-
-
+  @ApiBearerAuth()
   @Patch('uploadImage/:id')
+  @Auth(Role.USER, Role.ADMIN)
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
@@ -141,11 +138,12 @@ export class RequestsController {
     return this.requestsService.uploadImageRequest(id, image);
   }
 
-
+  @ApiBearerAuth()
   @Patch(':id')
+  @Auth(Role.ADMIN,Role.USER)
   @ApiConsumes('multipart/form-data')
   @ApiBody({
-    description: 'actualizar datos',
+    description: 'actualizar request',
     schema: {
       type: 'object',
       properties: {
@@ -189,8 +187,9 @@ export class RequestsController {
   }
 
 
-
+  @ApiBearerAuth()
   @Delete(':id')
+  @Auth(Role.ADMIN)
   remove(@Param('id') id: string) {
     return this.requestsService.remove(id);
   }

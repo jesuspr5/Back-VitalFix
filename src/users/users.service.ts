@@ -102,7 +102,13 @@ export class UsersService {
   }
 
   async findOne(id: string) {
-    return await this.userRepository.findOneBy({ id });
+
+    const user = await this.userRepository.findOneBy({ id });
+    if (!user) {
+      throw new BadRequestException('user not found ');
+    }
+    return user;
+   
   }
 
   async updatePasswordEmail(id: string, updateEmailDto: UpdateEmailDto) {
@@ -189,8 +195,9 @@ export class UsersService {
     return { urlAvatar: url };
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+async  remove(id: string) {
+    await this.findOne(id);
+    return this.userRepository.softRemove({ id });
   }
 
 }

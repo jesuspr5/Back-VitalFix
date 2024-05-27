@@ -28,7 +28,7 @@ import { AuthService } from 'src/auth/auth.service';
 
 
 
-@ApiBearerAuth()
+
 @ApiTags('Users')
 @Controller('users')
 export class UsersController {
@@ -37,8 +37,9 @@ export class UsersController {
     private readonly AuthService: AuthService
 
   ) { }
-
+  @ApiBearerAuth()
   @Post()
+  @Auth(Role.ADMIN,Role.USER)
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
   }
@@ -49,8 +50,9 @@ export class UsersController {
   // }
 
 
-
+  @ApiBearerAuth()
   @Patch('uploadImage/:id')
+  @Auth(Role.ADMIN,Role.USER,Role.TECNICHAL)
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
@@ -79,8 +81,9 @@ export class UsersController {
     return this.usersService.uploadImageProfile(id, image);
   }
 
-
+  @ApiBearerAuth()
   @Get()
+  @Auth(Role.ADMIN,Role.USER,Role.TECNICHAL)
   findAll() {
     return this.usersService.findAll();
   }
@@ -91,20 +94,23 @@ export class UsersController {
   //   return this.usersService.searchAddressGoogleMapByLatLng(searchGoogleMap);
   // }
 
-
+  @ApiBearerAuth()
   @Get(':id')
+  @Auth(Role.ADMIN,Role.USER,Role.TECNICHAL)
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(id);
   }
 
-
+  @ApiBearerAuth()
   @Patch(':id')
+  @Auth(Role.ADMIN,Role.USER,Role.TECNICHAL)
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(id, updateUserDto);
   }
 
-
+  @ApiBearerAuth()
   @Patch('updateProfile/:id')
+  @Auth(Role.ADMIN,Role.USER,Role.TECNICHAL)
   updateProfile(
     @Param('id') id: string,
     @Body() updateProfileDto: UpdateProfileDto,
@@ -112,8 +118,9 @@ export class UsersController {
     return this.usersService.updateProfile(id, updateProfileDto);
   }
 
-
+  @ApiBearerAuth()
   @Patch('updateEmail/:id')
+  @Auth(Role.ADMIN,Role.USER,Role.TECNICHAL)
   updatePasswordEmail(
     @Param('id') id: string,
     @Body() updateEmailDto: UpdateEmailDto,
@@ -121,8 +128,9 @@ export class UsersController {
     return this.usersService.updatePasswordEmail(id, updateEmailDto);
   }
 
-
+  @ApiBearerAuth()
   @Patch('updatePassword/:id')
+  @Auth(Role.ADMIN,Role.USER,Role.TECNICHAL)
   updatePassword(
     @Param('id') id: string,
     @Body() updatePasswordDto: UpdatePasswordDto,
@@ -130,9 +138,10 @@ export class UsersController {
     return this.usersService.updatePassword(id, updatePasswordDto);
   }
 
-  @Auth(Role.ADMIN)
+  @ApiBearerAuth()
   @Delete(':id')
+  @Auth(Role.ADMIN)
   remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+    return this.usersService.remove(id);
   }
 }

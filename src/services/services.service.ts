@@ -48,15 +48,15 @@ export class ServicesService {
   }
 
   async findOne(id: string) {
-    return await this.serviceRepository.findOneBy({ id });
+
+    const service =  await this.serviceRepository.findOneBy({ id });
+  
+    if (!service) {
+      throw new BadRequestException('service not found ');
+    }
+    return service;
+   
   }
-  // async update(id: string, updateServiceDto: UpdateServiceDto): Promise<void> {
-  //   const service = await this.findOne(id);
-  //   if (!service) {
-  //     throw new UnauthorizedException('Invalid service ID');
-  //   }
-  //   await this.serviceRepository.update(id, updateServiceDto);
-  // }
 
   async update(@Param('id') id: string, updateServiceDto: UpdateServiceDto) {
     const { type, ...updateData } = updateServiceDto;
@@ -75,7 +75,8 @@ export class ServicesService {
 
   async remove(id: string) {
 
-    return this.serviceRepository.softDelete({ id });
+    await this.findOne(id);
+    return this.serviceRepository.softRemove({ id });
   }
 
 

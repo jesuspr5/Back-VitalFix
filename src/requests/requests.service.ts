@@ -82,7 +82,13 @@ export class RequestsService {
   }
 
   async findOne(id: string) {
-    return await this.requestRepository.findOneBy({ id });
+
+    const request =  await this.requestRepository.findOneBy({ id });
+  
+    if (!request) {
+      throw new BadRequestException('request not found ');
+    }
+    return request
   }
 
   async update(@Param('id') id: string, updateRequestDto: UpdateRequestDto, image?: Express.Multer.File): Promise<Request> {
@@ -131,7 +137,8 @@ export class RequestsService {
   }
 
 
-  remove(id: string) {
+ async remove(id: string) {
+    await this.findOne(id)
     return this.requestRepository.softDelete({ id });
   }
 }

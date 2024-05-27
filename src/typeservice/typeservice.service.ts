@@ -41,7 +41,8 @@ export class TypeserviceService {
     });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} typeservice`;
+  async remove(id: string) {
+    await this.findOne(id);
+    return this.typeserviceRepository.softRemove({ id });
   }
 }

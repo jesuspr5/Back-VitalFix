@@ -57,8 +57,8 @@ export class ClaimsService {
   }
 
 
-  async findOne(id: string): Promise<Claim> {
-    const claim = await this.claimRepository.findOne({ where: { id } });
+  async findOne(id: string) {
+    const claim = await this.claimRepository.findOneBy({ id });
     if (!claim) {
       throw new NotFoundException(`Claim with id ${id} not found`);
     }
@@ -86,7 +86,8 @@ export class ClaimsService {
     return this.claimRepository.save(claim);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} claim`;
+ async remove(id: string) {
+    await this.findOne(id)
+    return this.claimRepository.softDelete({ id });
   }
 }

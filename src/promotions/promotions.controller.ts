@@ -10,37 +10,42 @@ import { Role } from 'src/common/enums/rol.enum';
 
 
 
-@ApiBearerAuth()
+
 @ApiTags('promotions')
 @Controller('promotions')
 
 export class PromotionsController {
   constructor(private readonly promotionsService: PromotionsService) { }
-
+  @ApiBearerAuth()
   @Post()
+  @Auth(Role.ADMIN)
   create(
     @Body() createPromotionDto: CreatePromotionDto
   ) {
     return this.promotionsService.create(createPromotionDto);
   }
-
+  @ApiBearerAuth()
   @Get()
+  @Auth(Role.ADMIN,Role.USER,Role.TECNICHAL)
   findAll() {
     return this.promotionsService.findAll();
   }
-
+  @ApiBearerAuth()
   @Get(':id')
+  @Auth(Role.ADMIN,Role.USER,Role.TECNICHAL)
   findOne(@Param('id') id: string) {
     return this.promotionsService.findOne(id);
   }
-
+  @ApiBearerAuth()
   @Patch(':id')
+  @Auth(Role.ADMIN)
   update(@Param('id') id: string, @Body() updatePromotionDto: UpdatePromotionDto) {
     return this.promotionsService.update(id, updatePromotionDto);
   }
 
-
+  @ApiBearerAuth()
   @Delete(':id')
+  @Auth(Role.ADMIN)
   remove(@Param('id') id: string) {
     return this.promotionsService.remove(id);
   }
