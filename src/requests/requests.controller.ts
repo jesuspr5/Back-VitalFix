@@ -33,7 +33,7 @@ export class RequestsController {
   constructor(private readonly requestsService: RequestsService) { }
 
   @ApiBearerAuth()
-  @Get('byUser/')
+  @Get('byUser/:id')
   @Auth(Role.USER, Role.ADMIN, Role.TECNICHAL)
   async obteneruser(@ActiveUser() userActive: UserActiveInterface) {
 
@@ -41,8 +41,8 @@ export class RequestsController {
   }
 
   @ApiBearerAuth()
-  @Patch('setTecnico')
-  @Auth(Role.USER, Role.ADMIN)
+  @Patch('setTecnico/:id')
+  @Auth(Role.USER, Role.ADMIN, Role.TECNICHAL)
   asingTecnico(@Body() setTecnicoRequestDto: SetTecnico, @Param('id') id: string) {
     return this.requestsService.setTecnico(id, setTecnicoRequestDto);
 
@@ -59,7 +59,7 @@ export class RequestsController {
 
   @ApiBearerAuth()
   @Patch('culminarRequest/:id')
-  @Auth(Role.ADMIN)
+  @Auth(Role.ADMIN, Role.USER, Role.TECNICHAL)
   culminarStatus(@Param('id') id: string) {
     return this.requestsService.changeStatus(id, 1);
 

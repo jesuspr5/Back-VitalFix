@@ -83,7 +83,7 @@ export class RequestsService {
       .leftJoinAndSelect('request.claims', 'Claim')
       .leftJoinAndSelect('request.tecnico', 'tecnico')
       .where('user.id = :id', { id })
-
+      .orWhere('tecnico.id = :id', { id })
       .getMany();
   }
 
