@@ -8,15 +8,16 @@ import {
 export class CreateEquipDto {
 
     @IsString()
-@MinLength(1)
-name: string;
+    @MinLength(1)
+    name: string;
 
-@IsOptional()
-@IsString()
-@MinLength(1)
-description: string;
+    @IsOptional()
+    @IsString()
+    @MinLength(1)
+    description: string;
 
-@IsString()
-@MinLength(1)
-status: string;
+    @IsOptional()
+    urlImagen: string | null;
+
+
 }

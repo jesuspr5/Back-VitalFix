@@ -142,7 +142,7 @@ export class RequestsService {
     if (!newTecnico) {
       throw new UnauthorizedException('Tecnico id is wrong');
     }
-
+    request.status = 'asignado'
     request.tecnico = newTecnico;
     return await this.requestRepository.save(request);
 

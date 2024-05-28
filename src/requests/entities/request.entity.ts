@@ -70,8 +70,10 @@ export class Request {
     reference: string;
 
 
-    @Column()
+
+    @Column({ nullable: true, default: 'pendiente' })
     status: string;
+
 
     @DeleteDateColumn({ select: false })
     deletedAt: Date;

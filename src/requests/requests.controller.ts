@@ -23,6 +23,7 @@ import { ActiveUser } from '../common/decorators/active-user.decorator';
 import { UserActiveInterface } from '../common/interfaces/user-active.interface';
 import { Auth } from 'src/auth/decorators/auth.decorator';
 import { Role } from 'src/common/enums/rol.enum';
+import path from 'path';
 
 
 @ApiTags('Request')
@@ -40,7 +41,7 @@ export class RequestsController {
   }
 
   @ApiBearerAuth()
-  @Post('setTecnico')
+  @Patch('setTecnico')
   @Auth(Role.USER, Role.ADMIN)
   asingTecnico(@Body() setTecnicoRequestDto: SetTecnico, @Param('id') id: string) {
     return this.requestsService.setTecnico(id, setTecnicoRequestDto);

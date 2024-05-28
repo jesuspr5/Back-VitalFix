@@ -28,13 +28,16 @@ export class Equip {
     @Column({ nullable: true })
     description?: string;
 
-    @Index()
+
     @Column({ nullable: true })
-    status: string;
+    urlImagen?: string | null;
+
+    @Index()
+    @Column({ nullable: true, default: true })
+    status: boolean;
 
     @DeleteDateColumn({ select: false })
     deletedAt: Date;
-
 
 
     @CreateDateColumn({
