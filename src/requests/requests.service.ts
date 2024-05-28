@@ -149,6 +149,33 @@ export class RequestsService {
 
   }
 
+  async changeStatus(@Param('id') id: string, status: Number) {
+
+    const request = await this.findOne(id);
+
+    if (!request) {
+      throw new UnauthorizedException('request id is wrong');
+    }
+
+    if (request.status === 'pendiente' && status === 1) {
+
+      throw new UnauthorizedException('la solicud no se puede finalizar,no esta asignada a un tecnico');
+    }
+    if (request.status === 'finalizada') {
+
+      throw new UnauthorizedException('la soliciutd ya esta finalizada');
+    }
+    if (request.status === 'cancelada' && status === 1) {
+      throw new UnauthorizedException('la solciitud se encuentra cancelada no se puede finalizar');
+    }
+    if (request.status === 'cancelada') {
+      throw new UnauthorizedException('la solciitud  ya esta cancelada');
+    }
+
+    request.status = status === 1 ? 'finalizada' : 'cancelada'
+    return await this.requestRepository.save(request);
+  }
+
 
 
   async uploadImageRequest(id: string, image: Express.Multer.File) {

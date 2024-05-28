@@ -47,6 +47,23 @@ export class RequestsController {
     return this.requestsService.setTecnico(id, setTecnicoRequestDto);
 
   }
+
+  @ApiBearerAuth()
+  @Patch('cancelarRequest/:id')
+  @Auth(Role.ADMIN, Role.USER, Role.TECNICHAL)
+  updateStatus(@Param('id') id: string) {
+    return this.requestsService.changeStatus(id, 2);
+
+  }
+
+
+  @ApiBearerAuth()
+  @Patch('culminarRequest/:id')
+  @Auth(Role.ADMIN)
+  culminarStatus(@Param('id') id: string) {
+    return this.requestsService.changeStatus(id, 1);
+
+  }
   @ApiBearerAuth()
   @Post()
   @Auth(Role.USER, Role.ADMIN)
