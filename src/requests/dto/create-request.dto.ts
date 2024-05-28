@@ -9,6 +9,9 @@ import {
     IsEmpty,
 } from 'class-validator';
 export class CreateRequestDto {
+    @Transform(({ value }) => value.trim())
+    @IsUUID()
+    equipId: string;
 
 
     user: string;

@@ -1,4 +1,5 @@
 import { Claim } from 'src/claims/entities/claim.entity';
+import { Equip } from 'src/equips/entities/equip.entity';
 import { Service } from 'src/services/entities/service.entity';
 import { User } from 'src/users/entities/user.entity';
 import {
@@ -96,6 +97,10 @@ export class Request {
 
     @ManyToOne(() => Service, { eager: true })
     service: Service;
+
+    @ManyToOne(() => Equip, equip => equip.request, { eager: true })
+    // @JoinColumn({ name: 'equipId' })
+    equip: Equip;
 
     @ManyToOne(() => User, user => user.requests, { eager: true })
     user: User;

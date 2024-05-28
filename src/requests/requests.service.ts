@@ -19,6 +19,7 @@ import { url } from 'inspector';
 import { Service } from 'src/services/entities/service.entity';
 import { UserActiveInterface } from 'src/common/interfaces/user-active.interface';
 import { User } from 'src/users/entities/user.entity';
+import { Equip } from 'src/equips/entities/equip.entity';
 
 
 @Injectable()
@@ -29,6 +30,8 @@ export class RequestsService {
     private readonly requestRepository: Repository<Request>,
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    @InjectRepository(Equip)
+    private readonly equipRepository: Repository<Equip>,
     private readonly firebaseService: FirebaseService,
     private readonly configService: ConfigService,
     @InjectRepository(Service)
@@ -38,11 +41,11 @@ export class RequestsService {
   async create(createRequestDto: CreateRequestDto, userActive: UserActiveInterface, image?: Express.Multer.File): Promise<Request> {
     const { id } = userActive;
 
-
     const user = await this.userRepository.findOne({ where: { id } });
     if (!user) {
       throw new UnauthorizedException('User ID is wrong');
     }
+
     if (image) {
       const url = await this.firebaseService.uploadImage(
         image,
@@ -51,15 +54,20 @@ export class RequestsService {
       createRequestDto.urlAvatar = url;
     }
 
-    const { type, ...requestData } = createRequestDto;
+    const { type, equipId, ...requestData } = createRequestDto;
     const typeService = await this.serviceRepository.findOne({ where: { id: type } });
+    const equip = await this.equipRepository.findOne({ where: { id: equipId } });
+    if (!equip) {
+      throw new UnauthorizedException('Equip ID is wrong');
+    }
     if (!typeService) {
       throw new NotFoundException(`Service with id ${type} not found`);
     }
     const request = this.requestRepository.create({
       ...requestData,
       service: typeService,
-      user: user
+      user: user,
+      equip: equip
     });
     return this.requestRepository.save(request);
   }
@@ -69,6 +77,7 @@ export class RequestsService {
     return this.requestRepository.createQueryBuilder('request')
       .leftJoinAndSelect('request.user', 'user')
       .leftJoinAndSelect('request.service', 'service')
+      .leftJoinAndSelect('request.equip', 'equip')
       .leftJoinAndSelect('service.type', 'TypeService')
       .leftJoinAndSelect('request.claims', 'Claim')
       .where('user.id = :id', { id })
@@ -83,8 +92,8 @@ export class RequestsService {
 
   async findOne(id: string) {
 
-    const request =  await this.requestRepository.findOneBy({ id });
-  
+    const request = await this.requestRepository.findOneBy({ id });
+
     if (!request) {
       throw new BadRequestException('request not found ');
     }
@@ -137,7 +146,7 @@ export class RequestsService {
   }
 
 
- async remove(id: string) {
+  async remove(id: string) {
     await this.findOne(id)
     return this.requestRepository.softDelete({ id });
   }

@@ -9,13 +9,15 @@ import { FirebaseService } from 'src/firebase/firebase.service';
 import { Service } from 'src/services/entities/service.entity';
 import { User } from 'src/users/entities/user.entity';
 import { RequestsController } from './requests.controller';
+import { Equip } from 'src/equips/entities/equip.entity';
+
 
 
 @Module({
   imports: [
     ConfigModule,
     FirebaseModule,
-    TypeOrmModule.forFeature([Request, Service, User]),
+    TypeOrmModule.forFeature([Request, Service, User, Equip]),
     forwardRef(() => AuthModule),
 
   ],

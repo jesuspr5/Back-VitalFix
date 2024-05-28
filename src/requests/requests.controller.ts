@@ -50,6 +50,7 @@ export class RequestsController {
     schema: {
       type: 'object',
       properties: {
+        equipId: { type: 'string' },
         type: { type: 'string' },
         details: { type: 'string' },
         maker: { type: 'string' },
@@ -90,19 +91,20 @@ export class RequestsController {
 
     ) image?: Express.Multer.File,
   ) {
+    console.log("🚀 ~ RequestsController ~ createRequestDto:", createRequestDto)
     return this.requestsService.create(createRequestDto, userActive, image);
   }
 
   @ApiBearerAuth()
   @Get()
-  @Auth(Role.USER, Role.ADMIN,Role.TECNICHAL)
+  @Auth(Role.USER, Role.ADMIN, Role.TECNICHAL)
   findAll() {
     return this.requestsService.findAll();
   }
 
   @ApiBearerAuth()
   @Get(':id')
-  @Auth(Role.USER, Role.ADMIN,Role.TECNICHAL)
+  @Auth(Role.USER, Role.ADMIN, Role.TECNICHAL)
   findOne(@Param('id') id: string) {
     return this.requestsService.findOne(id);
   }
@@ -140,13 +142,14 @@ export class RequestsController {
 
   @ApiBearerAuth()
   @Patch(':id')
-  @Auth(Role.ADMIN,Role.USER)
+  @Auth(Role.ADMIN, Role.USER)
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     description: 'actualizar request',
     schema: {
       type: 'object',
       properties: {
+        equipId: { type: 'string' },
         type: { type: 'string' },
         details: { type: 'string' },
         maker: { type: 'string' },

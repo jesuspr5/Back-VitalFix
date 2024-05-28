@@ -6,7 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { FirebaseModule } from './firebase/firebase.module';
 import { EnvCofiguration } from './config/env.config';
 import { PromotionsModule } from './promotions/promotions.module';
-import { InventoryModule } from './inventory/inventory.module';
+
 import { ServicesModule } from './services/services.module';
 import { RequestsModule } from './requests/requests.module';
 import { ReviewsModule } from './reviews/reviews.module';
@@ -14,6 +14,7 @@ import { TypeserviceModule } from './typeservice/typeservice.module';
 import { SuggestionsModule } from './suggestions/suggestions.module';
 import { ClaimsModule } from './claims/claims.module';
 import { MailsModule } from './mails/mails.module';
+import { EquipsModule } from './equips/equips.module';
 
 
 
@@ -46,7 +47,6 @@ import { MailsModule } from './mails/mails.module';
     AuthModule,
     FirebaseModule,
     PromotionsModule,
-    InventoryModule,
     ServicesModule,
     RequestsModule,
     ReviewsModule,
@@ -54,7 +54,7 @@ import { MailsModule } from './mails/mails.module';
     SuggestionsModule,
     ClaimsModule,
     MailsModule,
-
+    EquipsModule
 
   ],
   controllers: [],

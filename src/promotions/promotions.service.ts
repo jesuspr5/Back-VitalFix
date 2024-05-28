@@ -21,10 +21,7 @@ export class PromotionsService {
     private readonly promotionRepository: Repository<Promotion>,
 
   ) { }
-  async create(
-    createPromotionDto: CreatePromotionDto,
-
-  ) {
+  async create(createPromotionDto: CreatePromotionDto,) {
 
     return await this.promotionRepository.save(createPromotionDto);
   }
@@ -52,7 +49,7 @@ export class PromotionsService {
   }
 
   async remove(id: string) {
-      await this.findOne(id)
+    await this.findOne(id)
     return this.promotionRepository.softDelete({ id });
   }
 }

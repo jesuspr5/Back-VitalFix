@@ -1,3 +1,4 @@
+import { Request } from 'src/requests/entities/request.entity';
 import {
     Entity,
     Column,
@@ -6,28 +7,29 @@ import {
     UpdateDateColumn,
     CreateDateColumn,
     Index,
+    OneToMany,
 } from 'typeorm';
 
 @Entity()
-export class Inventory {
+
+export class Equip {
+
+
     @Index()
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
     @Index()
-    @Column()
+    @Column({ nullable: true })
     name: string;
 
-    @Index()
-    @Column()
-    quantity: number;
 
     @Index()
     @Column({ nullable: true })
     description?: string;
 
     @Index()
-    @Column()
+    @Column({ nullable: true })
     status: string;
 
     @DeleteDateColumn({ select: false })
@@ -48,8 +50,7 @@ export class Inventory {
     })
     updatedAt: Date;
 
+    @OneToMany(() => Request, (request) => request.equip)
+    request: Request[];
+
 }
-
-
-
-
