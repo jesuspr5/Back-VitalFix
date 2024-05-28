@@ -16,7 +16,7 @@ import {
 } from '@nestjs/common';
 import { RequestsService } from './requests.service';
 import { CreateRequestDto } from './dto/create-request.dto';
-import { UpdateRequestDto } from './dto/update-request.dto';
+import { SetTecnico, UpdateRequestDto } from './dto/update-request.dto';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ActiveUser } from '../common/decorators/active-user.decorator';
@@ -39,8 +39,13 @@ export class RequestsController {
     return await this.requestsService.findRequestByUser(userActive);
   }
 
+  @ApiBearerAuth()
+  @Post('setTecnico')
+  @Auth(Role.USER, Role.ADMIN)
+  asingTecnico(@Body() setTecnicoRequestDto: SetTecnico, @Param('id') id: string) {
+    return this.requestsService.setTecnico(id, setTecnicoRequestDto);
 
-
+  }
   @ApiBearerAuth()
   @Post()
   @Auth(Role.USER, Role.ADMIN)

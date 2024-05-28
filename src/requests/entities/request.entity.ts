@@ -105,6 +105,9 @@ export class Request {
     @ManyToOne(() => User, user => user.requests, { eager: true })
     user: User;
 
+    @ManyToOne(() => User, tecnico => tecnico.reqs, { eager: true })
+    tecnico: User;
+
 
     @OneToMany(() => Claim, (claims) => claims.request)
     claims: Claim[];

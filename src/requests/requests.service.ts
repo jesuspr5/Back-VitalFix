@@ -8,7 +8,7 @@ import {
   Param
 } from '@nestjs/common';
 import { CreateRequestDto } from './dto/create-request.dto';
-import { UpdateRequestDto } from './dto/update-request.dto';
+import { SetTecnico, UpdateRequestDto } from './dto/update-request.dto';
 import { ConfigService } from '@nestjs/config';
 import { FirebaseService } from '../firebase/firebase.service';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -20,7 +20,8 @@ import { Service } from 'src/services/entities/service.entity';
 import { UserActiveInterface } from 'src/common/interfaces/user-active.interface';
 import { User } from 'src/users/entities/user.entity';
 import { Equip } from 'src/equips/entities/equip.entity';
-
+import { Auth } from 'src/auth/decorators/auth.decorator';
+import { Role } from 'src/common/enums/rol.enum';
 
 @Injectable()
 export class RequestsService {
@@ -80,6 +81,7 @@ export class RequestsService {
       .leftJoinAndSelect('request.equip', 'equip')
       .leftJoinAndSelect('service.type', 'TypeService')
       .leftJoinAndSelect('request.claims', 'Claim')
+      .leftJoinAndSelect('request.tecnico', 'tecnico')
       .where('user.id = :id', { id })
 
       .getMany();
@@ -123,6 +125,28 @@ export class RequestsService {
     await this.requestRepository.update(id, updateData);
 
     return await this.findOne(id);
+  }
+
+  async setTecnico(@Param('id') id: string, setTecnicoRequestDto: SetTecnico) {
+
+
+    const request = await this.findOne(id);
+    if (!request) {
+      throw new UnauthorizedException('request id is wrong');
+    }
+
+    const { tecnicoId } = setTecnicoRequestDto;
+
+    const newTecnico = await this.userRepository.findOneBy({ role: Role.TECNICHAL, id: tecnicoId });
+
+    if (!newTecnico) {
+      throw new UnauthorizedException('Tecnico id is wrong');
+    }
+
+    request.tecnico = newTecnico;
+    return await this.requestRepository.save(request);
+
+
   }
 
 

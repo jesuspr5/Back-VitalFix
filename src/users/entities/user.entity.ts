@@ -67,6 +67,11 @@ export class User {
 
 
 
+  @OneToMany(() => Request, request => request.tecnico)
+  reqs: Request[];
+
+
+
   // @OneToMany(() => Technical, technical => technical.user)
   // technicals: Technical[];
 

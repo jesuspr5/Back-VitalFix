@@ -5,6 +5,10 @@ import { IsOptional, IsString, MinLength, IsNumber, IsUUID, IsEmail } from 'clas
 export class UpdateRequestDto {
 
 
+
+    @IsUUID()
+    equipId: string;
+
     @IsString()
     @MinLength(1)
     details?: string;
@@ -71,4 +75,14 @@ export class UpdateRequestDto {
     @IsString()
     @MinLength(1)
     status?: string;
+}
+
+
+export class SetTecnico {
+
+
+    @IsUUID()
+    tecnicoId: string;
+
+
 }
